@@ -1,0 +1,70 @@
+#NEXUS 
+
+Begin trees;  [Treefile saved Mon Nov  5 14:52:56 2018]
+[!
+>Data file = /Users/rpd14/Documents/Side_projects/Masters_writeup/dispRity_Pipeline/Keating16.nex
+>Heuristic search settings:
+>  Optimality criterion = parsimony
+>    Character-status summary:
+>      Of 120 total characters:
+>        All characters are of type 'unord'
+>        All characters have equal weight
+>        10 characters are constant
+>        22 variable characters are parsimony-uninformative
+>        Number of parsimony-informative characters = 88
+>    Gaps are treated as "missing"
+>  Starting tree(s) obtained via stepwise addition
+>  Addition sequence: random
+>    Number of replicates = 1000
+>    Starting seed = 806889365
+>  Number of trees held at each step during stepwise addition = 5
+>  Branch-swapping algorithm: tree-bisection-reconnection (TBR)
+>  Steepest descent option not in effect
+>  Initial 'MaxTrees' setting = 100
+>  Branches collapsed (creating polytomies) if maximum branch length is zero
+>  'MulTrees' option in effect
+>  Topological constraints not enforced
+>  Trees are unrooted
+>
+>Heuristic search completed
+>   Total number of rearrangements tried = 7348406
+>   Score of best tree(s) found = 164
+>   Number of trees retained = 12
+>   Time used = 12 sec (CPU time = 2.29 sec)
+]
+	Translate
+		1 Cephalochordata,
+		2 Tunicata,
+		3 Myxinoidea,
+		4 Petromyzontida,
+		5 Heterostraci,
+		6 Astraspis,
+		7 Arandaspida,
+		8 Jamoytius,
+		9 Euphanerops,
+		10 Osteostraci,
+		11 Galeaspida,
+		12 Loganellia,
+		13 Turinia,
+		14 Jawed_vertebrates,
+		15 Euconodonta,
+		16 Birkenia,
+		17 Pharyngolepis,
+		18 Rhyncholepis,
+		19 Pterygolepis,
+		20 Cowielepis,
+		21 Lasanius
+		;
+tree PAUP_1 = [&U] (1,(2,(3,((4,(((5,7),6),((((((8,9),21),20),((16,19),18)),17),(((10,14),11),(12,13))))),15))));
+tree PAUP_2 = [&U] (1,(2,(3,((4,(((5,7),6),((((((8,9),21),((16,19),18)),20),17),(((10,14),11),(12,13))))),15))));
+tree PAUP_3 = [&U] (1,(2,(3,((4,(((5,7),6),((((8,9),21),(((10,14),11),(12,13))),((((16,19),18),20),17)))),15))));
+tree PAUP_4 = [&U] (1,(2,(3,((4,(((5,7),6),(((((8,9),21),(((16,19),18),20)),17),(((10,14),11),(12,13))))),15))));
+tree PAUP_5 = [&U] (1,(2,(3,(4,((((5,7),6),((((((8,9),21),20),((16,19),18)),17),(((10,14),11),(12,13)))),15)))));
+tree PAUP_6 = [&U] (1,(2,(3,((4,15),(((5,7),6),((((((8,9),21),20),((16,19),18)),17),(((10,14),11),(12,13))))))));
+tree PAUP_7 = [&U] (1,(2,(3,(4,((((5,7),6),((((((8,9),21),((16,19),18)),20),17),(((10,14),11),(12,13)))),15)))));
+tree PAUP_8 = [&U] (1,(2,(3,((4,15),(((5,7),6),((((((8,9),21),((16,19),18)),20),17),(((10,14),11),(12,13))))))));
+tree PAUP_9 = [&U] (1,(2,(3,(4,((((5,7),6),((((8,9),21),(((10,14),11),(12,13))),((((16,19),18),20),17))),15)))));
+tree PAUP_10 = [&U] (1,(2,(3,((4,15),(((5,7),6),((((8,9),21),(((10,14),11),(12,13))),((((16,19),18),20),17)))))));
+tree PAUP_11 = [&U] (1,(2,(3,(4,((((5,7),6),(((((8,9),21),(((16,19),18),20)),17),(((10,14),11),(12,13)))),15)))));
+tree PAUP_12 = [&U] (1,(2,(3,((4,15),(((5,7),6),(((((8,9),21),(((16,19),18),20)),17),(((10,14),11),(12,13))))))));
+End;

@@ -1,0 +1,38 @@
+#NEXUS 
+
+Begin trees;  [Treefile saved Mon Nov  5 14:53:58 2018]
+[!
+>Consensus of 12 trees
+>
+>Source of trees from which consensus(es) calculated...
+>Heuristic search settings:
+>  Optimality criterion = parsimony
+>    Character-status summary:
+>      Of 120 total characters:
+>        All characters are of type 'unord'
+>        All characters have equal weight
+>        10 characters are constant
+>        22 variable characters are parsimony-uninformative
+>        Number of parsimony-informative characters = 88
+>    Gaps are treated as "missing"
+>  Starting tree(s) obtained via stepwise addition
+>  Addition sequence: random
+>    Number of replicates = 1000
+>    Starting seed = 806889365
+>  Number of trees held at each step during stepwise addition = 5
+>  Branch-swapping algorithm: tree-bisection-reconnection (TBR)
+>  Steepest descent option not in effect
+>  Initial 'MaxTrees' setting = 100
+>  Branches collapsed (creating polytomies) if maximum branch length is zero
+>  'MulTrees' option in effect
+>  Topological constraints not enforced
+>  Trees are unrooted
+>
+>Heuristic search completed
+>   Total number of rearrangements tried = 7348406
+>   Score of best tree(s) found = 164
+>   Number of trees retained = 12
+>   Time used = 12 sec (CPU time = 2.29 sec)
+]
+	tree MajRule = [&U] (Cephalochordata,Tunicata,(Myxinoidea,(Petromyzontida,(((Heterostraci,Arandaspida),Astraspis),(((((Jamoytius,Euphanerops),Lasanius),((Birkenia,Pterygolepis),Rhyncholepis),Cowielepis),Pharyngolepis),(((Osteostraci,Jawed_vertebrates),Galeaspida),(Loganellia,Turinia)))),Euconodonta)));
+end;

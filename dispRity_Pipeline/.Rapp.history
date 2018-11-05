@@ -1,0 +1,338 @@
+tree.data <- timePaleoPhy(tree.data, ages.data, type="mbl", vartime=2)
+tree.data$root.time
+geoscalePhylo function in the strap package:#
+geoscalePhylo(ladderize(tree.data), cex.age=0.6, cex.ts=0.8, cex.tip=1)
+geoscalePhylo(ladderize(tree.data), cex.age=0.6, cex.ts=0.8, cex.tip=1)
+tree.data
+rate.data <- DiscreteCharacterRate(tree.data, nexus.data, seq(tree.data$root.time, tree.data$root.time - max(diag(vcv(tree.data))), length.out=6), alpha=0.01)
+rate.data$branch.results
+rate.data$branch.results[, c("ml.signif.hi", "ml.signif.lo")]
+edge.color <- rep("black", nrow(tree.data$edge))#
+edge.color[which(rate.data$branch.results[, "ml.signif.hi"] == 1)] <- "red"#
+edge.color[which(rate.data$branch.results[, "ml.signif.lo"] == 1)] <- "blue"
+geoscalePhylo(ladderize(tree.data), cex.age=0.6, cex.ts=0.8, cex.tip=1, edge.color=edge.color[match(ladderize(tree.data)$edge[, 2], tree.data$edge[,2])])
+rate.data$node.results
+rate.data$node.results[, c("ml.signif.hi", "ml.signif.lo")]
+rate.data$node.results[, c("ml.signif.hi.ib", "ml.signif.lo.ib")]
+node.color <- rep("white", nrow(rate.data$node.results))#
+node.color[which(rate.data$node.results[, "ml.signif.hi.ib"] == 1)] <- "red"#
+node.color[which(rate.data$node.results[, "ml.signif.lo.ib"] == 1)] <- "blue"#
+node.color[which(is.na(rate.data$node.results[, "ml.signif.lo.ib"]))] <- NA
+geoscalePhylo(tree.data, cex.age=0.6, cex.ts=0.8, cex.tip=1)
+# Now we can plot our tree...:#
+geoscalePhylo(tree.data, cex.age=0.6, cex.ts=0.8, cex.tip=1)#
+#
+# ...and plot our node results on top:#
+nodelabels(node=rate.data$node.results[, "node"][!is.na(node.color)], pch=21, col="black", bg=node.color[!is.na(node.color)])
+# Because we trimmed our matrix down we also need to remove taxa from our tree that are not in our PCO data.#
+# We can do this using drop.tip in ace and setdiff (in base R) and store our answer in a new variable (plot.tree):#
+plot.tree <- drop.tip(tree.data, setdiff(tree.data$tip.label, rownames(pco.data)))
+# Here we will use the ace function in ape:#
+PCOx.anc <- ace(pco.data[, PCOx], plot.tree, type="continuous")$ace#
+PCOy.anc <- ace(pco.data[, PCOy], plot.tree, type="continuous")$ace#
+#
+# Now we
+all.PCOx <- c(pco.data[match(plot.tree$tip.label, rownames(pco.data)), PCOx], PCOx.anc)#
+all.PCOy <- c(pco.data[match(plot.tree$tip.label, rownames(pco.data)), PCOy], PCOy.anc)
+branch.xs <- cbind(all.PCOx[plot.tree$edge[, 1]], all.PCOx[plot.tree$edge[, 2]])#
+branch.ys <- cbind(all.PCOy[plot.tree$edge[, 1]], all.PCOy[plot.tree$edge[, 2]])
+plot(pco.data[, PCOx], pco.data[, PCOy], xlab=paste("PCO ", PCOx, " (", round(scree.data[PCOx], 2), "% variance)", sep=""), ylab=paste("PCO ", PCOy, " (", round(scree.data[PCOy], 2), "% variance)", sep=""), type="n")
+for(i in 1:nrow(branch.xs)) lines(x=branch.xs[i,], y=branch.ys[i,], col="grey", lwd=2)
+points(pco.data[, PCOx], pco.data[, PCOy], pch=19)
+text(pco.data[, PCOx], pco.data[, PCOy], rownames(pco.data), cex=0.6)
+?Claddis
+?timePaleoPhy
+?paleotree
+?DiscreteCharacterRate
+?setwd
+getwd()
+? paleotree
+library(paleotree)
+? paleotree
+library (ape)
+? ape
+library(DispRity)
+library()
+library(dispRity)
+library(dispRity?)
+library(?dispRity)
+? dispRity
+set.seed(1)#
+## Generate a random ultrametric tree#
+tree <- rcoal(20)#
+#
+## Add some node labels#
+tree$node.label <- letters[1:19]#
+#
+## Add it's root time#
+tree$root.time <- max(tree.age(tree)$ages)#
+#
+## Create a slice on the tree at age 0.5#
+tree_75 <- slice.tree(tree, age = 0.75, "deltran")
+tree
+plot(tree)
+plot(tree_75)
+plot(tree)
+? rcoal
+tree$root.time
+tree$node.label
+? dispRity
+? claddis
+library(claddis)
+library(Claddis)
+? Claddis
+library(beepr)
+beepr?
+qge
+?beepr
+?beep
+beep(sound=1)
+beep(sound=2)
+beep(sound=3)
+beep(sound=4)
+beep(sound=5)
+beep(sound=6)
+beep(sound=7)
+beep(sound=8)
+beep(sound=9)
+beep(sound=10)
+beep(sound=11)
+beep(sound=9)
+?ping
+beep(1)
+beep(2)
+beep(5)
+library(beepr)
+beep(9)
+library(phangorn)
+? phangorn
+data(Laurasiatherian)#
+set.seed(1)#
+bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)nj(dist.hamming(x)), #
+    bs=50)#
+cnet <- consensusNet(bs, .3)#
+plot(cnet, "2D")#
+## Not run: #
+library(rgl)#
+open3d()#
+plot(cnet, show.tip.label=FALSE, show.nodes=TRUE)#
+plot(cnet, type = "2D", show.edge.label=TRUE)#
+#
+tmpfile <- normalizePath(system.file("extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))#
+trees <- read.tree(tmpfile)#
+cnet_woodmouse <- consensusNet(trees, .3)#
+plot(cnet_woodmouse, type = "2D", show.edge.label=TRUE)
+library(beepr)
+? beep
+beep(1)
+beep(2)
+beep(3)
+beep(4)
+beep(5)
+beep(6)
+beep(7)
+beep(8)
+beep(9)
+beep(10)
+beep(11)
+beep(12)
+beep(13)
+beep(6)
+BF<-2*(log(-1104.05)-(log(-1125.03)))
+log10
+log(10)
+BF<-2*(log(1104.05)-(log(1125.03)))
+BF
+log(-8)
+BF<-2*(log(-1104.05)-(log(-1125.03)))
+BF
+2*5
+BF<-2*(log(1104.05)-(log(1125.03)))
+BF
+BF<-2*(log(1125.03)-(log(1104.05)))
+BF
+library(DispRity)
+library(dispRity)
+data(BeckLee_mat50)#
+data(BeckLee_mat99)
+head(BeckLee_mat50[, 1:5])
+BeckLee_mat50
+## Loading a list of first and last occurrence dates for the fossils#
+data(BeckLee_ages)#
+head(BeckLee_ages)
+## Loading and plotting the phylogeny#
+data(BeckLee_tree)#
+plot(BeckLee_tree, cex = 0.8) #
+axisPhylo(root = 140)#
+nodelabels(cex = 0.5)
+my_tree$root.time <- my_age
+## Measuring disparity through time#
+disparity_data <- dispRity.through.time(BeckLee_mat50, BeckLee_tree,#
+                                        time = 3, metric = c(sum, variances))
+disparity_data
+## Summarising disparity through time#
+summary(disparity_data)
+plot(disparity_data, type = "continuous")
+disp_lm <- test.dispRity(disparity_data, test = lm, comparisons = "all")
+summary(disp_lm)
+mammal_groups <- crown.stem(BeckLee_tree, inc.nodes = FALSE)
+?crown.stem
+??crown.stem
+?dispRity
+update(dispRity)
+package(dispRity)
+install.packages("dispRity")
+library(dispRity)
+?dispRity
+library(DispRity)
+library(dispRity)
+?dispRity
+data(BeckLee_mat50)#
+data(BeckLee_mat99)
+data(BeckLee_ages)
+data(BeckLee_tree)#
+plot(BeckLee_tree, cex = 0.8) #
+axisPhylo(root = 140)#
+nodelabels(cex = 0.5)
+## Measuring disparity through time#
+disparity_data <- dispRity.through.time(BeckLee_mat50, BeckLee_tree,#
+                                        time = 3, metric = c(sum, variances))
+plot(disparity_data, type = "continuous")
+disp_lm <- test.dispRity(disparity_data, test = lm, comparisons = "all")
+summary(disp_lm)
+## Creating the two groups (crown versus stem) as a list#
+mammal_groups <- crown.stem(BeckLee_tree, inc.nodes = FALSE)#
+#
+## Measuring disparity for each group#
+disparity_data <- dispRity.per.group(BeckLee_mat50, group = mammal_groups,#
+                                     metric = c(sum, variances))
+disparity_data
+summary(disparity_data)
+plot(disparity_data)
+test.dispRity(disparity_data, test = wilcox.test, details = TRUE)
+?crown.stem
+crown.stem(BeckLeetree)
+crown.stem(BeckLee_Tree)
+crown.stem(BeckLee_tree)
+BeckLee_Tree
+## Splitting the tree into two subtrees#
+crown_stem_trees <- crown.stem(BeckLee_tree, output.names = FALSE)#
+## Graphical parameters#
+op <- par(mfrow = c(1,3))#
+## Plotting the trees#
+plot(BeckLee_tree, main = "Full tree")#
+plot(crown_stem_trees$crown, main = "Crown group")#
+plot(crown_stem_trees$stem, main = "Stem group")
+BeckLee_Tree
+summary(BeckLee_Tree)
+BeckLee_tree
+summary(BeckLee_tree)
+library(dispRity)
+?dispRity
+library(dispRity)#
+library(geomorph)#
+library(vegan)#
+library(cluster)
+setwd("~/Documents/Side_projects/Masters_writeup/dispRity_Pipeline")#
+Kdata <- ReadMorphNexus("Keating16.nex")
+library(Claddis)
+setwd("~/Documents/Side_projects/Masters_writeup/dispRity_Pipeline")#
+Kdata <- ReadMorphNexus("Keating16.nex")
+Kdata
+Claddis.ordination(Kdata)
+?Claddis.ordination
+OrdKdata <- Claddis.ordination(Kdata)
+OrdKdata <- read.tre("KeatMaj.tre")
+OrdKdata <- read.tree("KeatMaj.tre")
+OrdKdata <- read.nex("KeatMaj.tre")
+?ape
+OrdKdata <- read.nexus("KeatMaj.tre")
+OrdKdata
+OrdKdata <- Claddis.ordination(Kdata)
+plot(Ktree, cex = 0.8) #
+axisPhylo(root = 140)#
+nodelabels(cex = 0.5)
+Ktree <- read.nexus("KeatMaj.tre")
+plot(Ktree, cex = 0.8) #
+axisPhylo(root = 140)#
+nodelabels(cex = 0.5)
+plot(Ktree, cex = 0.8) #
+axisPhylo(root = 140)#
+nodelabels(cex = 0.5)
+Kdates <- read.csv("Keating16Dates.csv")
+KDates
+Kdates
+Kdates <- read.csv("Keating16Dates.csv", Header="true")
+?read.csv
+Kdates <- read.csv("Keating16Dates.csv", header="true")
+Kdates <- read.csv("Keating16Dates.csv", header=true)
+Kdates <- read.csv("Keating16Dates.csv", header=TRUE)
+Kdates
+Kdates <- read.csv("Keating16Dates.csv", header="true",row.names=1)
+Kdates <- read.csv("Keating16Dates.csv", header="TRUE",row.names=1)
+Kdates <- read.csv("Keating16Dates.csv", header=TRUE,row.names=1)
+Kdates
+plot(Ktree, cex = 0.8) #
+axisPhylo(root = 500)#
+nodelabels(cex = 0.5)
+data(BeckLee_tree)
+BeckLee_tree
+Ktree$root.time <- 541
+Ktree
+Ktree$root.time
+disparity_data <- dispRity.through.time(OrdKdata, Ktree, time = 3, metric = c(sum, variances))
+data(BeckLee_tree)#
+plot(BeckLee_tree, cex = 0.8) #
+axisPhylo(root = 140)#
+nodelabels(cex = 0.5)
+tree_1 <-DatePhylo(Ktree, Kdates, method="equal", rlen=1)
+Datephylo?
+g
+?Datephylo
+?DatePhylo
+?DatePhylo
+library(paleotree)
+?TimePaleoPhy
+?timePaleoPhy
+?DatePhylo
+summary(Ktree)
+Kdates
+plot(Ktree)
+Ktree
+Ktree$Tip.labels
+Ktree$tip.labels
+Ktree$taxa
+Ktree$tip.label
+Kdates[match(Ktree$tip.label, )]df <- data.frame(name=letters[1:4], value=c(rep(TRUE, 2), rep(FALSE, 2)))
+df <- data.frame(name=letters[1:4], value=c(rep(TRUE, 2), rep(FALSE, 2)))
+df
+target <- c("b", "c", "a", "d")
+df[match(target, df$name),]
+df
+df<-df[match(target, df$name),]
+df
+summary(Kdates)
+Kdates[match(Ktree$tip.label, Kdates$[,1])]
+colnames(df)
+Kates$header
+Kdates$header
+Kdates$row.names
+Kdates[match(Ktree$tip.label, Kdates$row.names)]
+?match
+Kdates[match(Ktree$tip.label, row.names(Kdates))]
+Kdates[match(Ktree$tip.label, rownames(Kdates))]
+Kdates[match(Ktree$tip.label, rownames(Kdates)),]
+Kdates
+Ktree$tip.label
+Kdates <- read.csv("Keating16Dates.csv", header=TRUE,row.names=1)
+Kdates[match(Ktree$tip.label, rownames(Kdates)),]
+Kdates <- Kdates[match(Ktree$tip.label, rownames(Kdates)),]
+Kdates
+tree_1 <-DatePhylo(Ktree, Kdates, method="equal", rlen=1)
+tree_1
+plot(tree_1)
+DatedKtree<-DatePhylo(Ktree, Kdates, method="equal", rlen=1)
+disparity_data <- dispRity.through.time(OrdKdata, DatedKtree, time = 3, metric = c(sum, variances))
+?disparity.through.time
+?dispRity.through.time
+disparity_data <- dispRity.through.time(OrdKdata, DatedKtree, time = 3, metric = c(sum, variances))

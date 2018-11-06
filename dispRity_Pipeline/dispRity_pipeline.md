@@ -3,7 +3,7 @@ Early vertebrates dispRity pipeline
 RPDearden
 06/11/2018
 
-This is a test of the functionalities of dispRity, using the matrix from [Keating *et al.* 2016](http://rspb.royalsocietypublishing.org/content/283/1826/20152917). The tree is a majority rule consensus I obtained by running the dataset in PAUP\*, and the dates are cobbled together from the literature.
+This is me having a play with the functionalities of dispRity, using the matrix from [Keating *et al.* 2016](http://rspb.royalsocietypublishing.org/content/283/1826/20152917). The tree is a majority rule consensus I obtained by running the dataset in PAUP\*, and the dates are cobbled together from the literature.
 
 ### Preliminaries
 
@@ -55,7 +55,7 @@ DatedKtree<-DatePhylo(Ktree, Kdates, method="equal", rlen=1)
 Make time bins (random 50my)
 
 ``` r
-time_bins <- rev(seq(from = 200, to = 600, by = 100))
+time_bins <- rev(seq(from = 250, to = 600, by = 50))
 ```
 
 Split dataset into subsets
@@ -81,12 +81,17 @@ rare_disparity_Kdata <- dispRity(rare_bin_Kdata, metric = c(sum, variances))
 Plot it up
 
 ``` r
-quartz(width = 10, height = 5) ; par(mfrow = (c(1,2)), bty = "n")
+#quartz(width = 10, height = 5) ; par(mfrow = (c(1,2)), bty = "n")
 plot(boot_disparity_Kdata, type = "continuous", main = "bootstrapped results")
-plot(rare_disparity_Kdata, type = "continuous", main = "rarefied results")
 ```
 
 ![](dispRity_pipeline_files/figure-markdown_github/unnamed-chunk-11-1.png)
+
+``` r
+plot(rare_disparity_Kdata, type = "continuous", main = "rarefied results")
+```
+
+![](dispRity_pipeline_files/figure-markdown_github/unnamed-chunk-11-2.png)
 
 Testing bins difference - won't work with this dataset as not enough data
 

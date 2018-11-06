@@ -1,3 +1,206 @@
+?gsub
+?paste0
+library(ape)
+?ape
+library(ape)
+ape
+?library()
+library(dispRity)
+install_github("TGuillerme/dispRity", ref = "release")
+library(devtools)
+if(!require(devtools)) install.packages("devtools")
+library(devtools)
+install_github("TGuillerme/dispRity", ref = "release")
+library(dispRity)
+set.seed(123)
+data(McClean_data)
+ord_matrix <- McClean_data$ordination
+data
+ord_matrix
+library(ape)
+library(geiger)
+#The getAllSubTrees function below is a necessary subfunction that atomizes a tree into each individual subclade and was provided compliments of Luke Harmon.#
+getAllSubtrees<-function(phy, minSize=2) {#
+res<-list()#
+count=1#
+ntip<-length(phy$tip.label)#
+for(i in 1:phy$Nnode) {#
+l<-node.leaves(phy, ntip+i)#
+bt<-match(phy$tip.label, l)#
+if(sum(is.na(bt))==0) {#
+st<-phy#
+} else st<-drop.tip(phy, phy$tip.label[is.na(bt)])#
+if(length(st$tip.label)>=minSize) {#
+res[[count]]<-st#
+count<-count+1#
+}}res}
+#Fist we need to open some necessary libraries#
+library(ape)#
+library(geiger)#
+#The getAllSubTrees function below is a necessary subfunction that atomizes a tree into each individual subclade and was provided compliments of Luke Harmon.#
+getAllSubtrees<-function(phy, minSize=2) {#
+res<-list()#
+count=1#
+ntip<-length(phy$tip.label)#
+for(i in 1:phy$Nnode) {#
+l<-node.leaves(phy, ntip+i)#
+bt<-match(phy$tip.label, l)#
+if(sum(is.na(bt))==0) {#
+st<-phy#
+} else st<-drop.tip(phy, phy$tip.label[is.na(bt)])#
+if(length(st$tip.label)>=minSize) {#
+res[[count]]<-st#
+count<-count+1#
+}}res}
+#Fist we need to open some necessary libraries#
+library(ape)#
+library(geiger)#
+#The getAllSubTrees function below is a necessary subfunction that atomizes a tree into each individual subclade and was provided compliments of Luke Harmon.#
+getAllSubtrees<-function(phy, minSize=2) {#
+res<-list()#
+count=1#
+ntip<-length(phy$tip.label)#
+for(i in 1:phy$Nnode) {#
+l<-node.leaves(phy, ntip+i)#
+bt<-match(phy$tip.label, l)#
+if(sum(is.na(bt))==0) {#
+st<-phy#
+} else st<-drop.tip(phy, phy$tip.label[is.na(bt)])#
+if(length(st$tip.label)>=minSize) {#
+res[[count]]<-st#
+count<-count+1#
+}}res
+#Fist we need to open some necessary libraries#
+library(ape)#
+library(geiger)#
+#The getAllSubTrees function below is a necessary subfunction that atomizes a tree into each individual subclade and was provided compliments of Luke Harmon.#
+getAllSubtrees<-function(phy, minSize=2) {#
+res<-list()#
+count=1#
+ntip<-length(phy$tip.label)#
+for(i in 1:phy$Nnode) {#
+l<-node.leaves(phy, ntip+i)#
+bt<-match(phy$tip.label, l)#
+if(sum(is.na(bt))==0) {#
+st<-phy#
+} else st<-drop.tip(phy, phy$tip.label[is.na(bt)])#
+if(length(st$tip.label)>=minSize) {#
+res[[count]]<-st#
+count<-count+1#
+}}res}}
+#Fist we need to open some necessary libraries#
+library(ape)#
+library(geiger)#
+#The getAllSubTrees function below is a necessary subfunction that atomizes a tree into each individual subclade and was provided compliments of Luke Harmon.#
+getAllSubtrees<-function(phy, minSize=2) {#
+res<-list()#
+count=1#
+ntip<-length(phy$tip.label)#
+for(i in 1:phy$Nnode) {#
+l<-node.leaves(phy, ntip+i)#
+bt<-match(phy$tip.label, l)#
+if(sum(is.na(bt))==0) {#
+st<-phy#
+} else st<-drop.tip(phy, phy$tip.label[is.na(bt)])#
+if(length(st$tip.label)>=minSize) {#
+res[[count]]<-st#
+count<-count+1#
+}}res}
+getAllSubtrees<-function(phy, minSize=2) {#
+	res<-list()#
+	count=1#
+	ntip<-length(phy$tip.label)#
+	for(i in 1:phy$Nnode) {#
+	l<-node.leaves(phy, ntip+i)#
+	bt<-match(phy$tip.label, l)#
+	if(sum(is.na(bt))==0) {#
+	st<-phy#
+	} else st<-drop.tip(phy, phy$tip.label[is.na(bt)])#
+	if(length(st$tip.label)>=minSize) {#
+	res[[count]]<-st#
+	count<-count+1#
+	}}res#
+	}
+plotBayesBoot <- function(bayesTree,bootTree) {#
+getAllSubtrees(bayesTree)->bayesSub#
+getAllSubtrees(bootTree)->bootSub#
+bootList<-matrix("<50",nnode(bayestree),1)#
+#The commands below compare all the subclades in the Bayes tree to all the subclades in the bootstrap tree, and vice versa, and identifies all those clades that are identical.#
+for(i in 1:Nnode(bayesTree)) {#
+for(j in 1:Nnode(bootTree)) {#
+match(bayesSub[[i]]$tip.label[order(bayesSub[[i]]$tip.label)], bootSub[[j]]$tip.label[order(bootSub[[j]]$tip.label)])->shared#
+match(bootSub[[j]]$tip.label[order(bootSub[[j]]$tip.label)], bayesSub[[i]]$tip.label[order(bayesSub[[i]]$tip.label)])->shared2#
+if(sum(is.na(c(shared,shared2)))==0) {#
+bootTree$node.label[j]->bootList[i]#
+}}}#
+plot(bayesTree, cex=1, lwd=0.5) #Plots your Bayesian consensus tree#
+nodelabels(bayesTree$node.label, adj=c(1.2, -0.3), frame="n", cex=1, font=1) #Adds posterior probability values to the tree. Change the 'cex' value to make the fond smaller or larger. A value of 1 will give you a readable result in the R quartz window, but a value closer to 0.25 might be better for publication)#
+nodelabels(bootList, adj=c(1.4, 1.3), frame="n", cex=1, font=2) #Adds bootstrap values.#
+}
+install.packages(c("phytools", "strap", "ape", "gdata"), dependencies=T)
+# Install the paleotree package from CRAN:#
+install.packages("paleotree", dependencies=T)#
+#
+# Install the strap package from CRAN:#
+install.packages("strap", dependencies=T)#
+#
+# Install the devtools package from CRAN:#
+install.packages("devtools")#
+#
+# Load the devtools package into R:#
+library(devtools)
+# Install the Claddis package from GitHub:#
+install_github("graemetlloyd/Claddis")
+# Load the Claddis package into R:#
+library(Claddis)#
+#
+# Load the paleotree library into R (we will use this for time-scaling our tree later):#
+library(paleotree)#
+#
+# Load the strap library into R (we will use this for plotting a time-scaled tree):#
+library(strap)
+? claddis
+? Claddis
+?Claddis
+# Before we can use any of the other functions we really need to read in some data.#
+# To do this we will use ReadMorphNexus, a function designed to read in morphological data in the common #NEXUS format.#
+# Note that for today we will read in a fairly small data set as many of the methods will run too slowly on a larger file to be useful in a 45-minute session!#
+# HOWEVER, by all means try to at least load your own data with this function as this is usually the hardest step.#
+# Here we are going to use Cullen et al (2013):#
+browseURL("http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0058853")
+nexus.data <- ReadMorphNexus("http://www.graemetlloyd.com/nexus/Cullen_etal_2013a.nex")
+nexus.data
+names(nexus.data)
+nexus.data$matrix
+nexus.data$matrix["Sinornithomimus_dongi", 22]
+safe.data <- SafeTaxonomicReduction(nexus.data)
+safe.data
+safe.data$str.list
+dist.data <- MorphDistMatrix(nexus.data)
+names(dist.data)
+any(dist.data$comp.char.matrix == 0)
+cmdscale(dist.data$raw.dist.matrix)
+dist.data$max.dist.matrix
+trimmed.max.data <-TrimMorphDistMatrix(dist.data$max.dist.matrix)
+trimmed.max.data$removed.taxa
+any(is.na(trimmed.max.data$dist.matrix))
+pco.data <- cmdscale(trimmed.max.data$dist.matrix, k=nrow(trimmed.max.data$dist.matrix) - 1, add=T)$points
+scree.data <- apply(pco.data, 2, var) / sum(apply(pco.data, 2, var)) * 100
+plot(scree.data, type="l", xlab="Ordination axis", ylab="Percentage variance")
+PCOx <- 1#
+PCOy <- 2
+plot(pco.data[, PCOx], pco.data[, PCOy], xlab=paste("PCO ", PCOx, " (", round(scree.data[PCOx], 2), "% variance)", sep=""), ylab=paste("PCO ", PCOy, " (", round(scree.data[PCOy], 2), "% variance)", sep=""), pch=19)
+text(pco.data[, PCOx], pco.data[, PCOy], rownames(pco.data))
+plot(pco.data[, PCOx], pco.data[, PCOy], xlab=paste("PCO ", PCOx, " (", round(scree.data[PCOx], 2), "% variance)", sep=""), ylab=paste("PCO ", PCOy, " (", round(scree.data[PCOy], 2), "% variance)", sep=""), pch=19)#
+#
+# This can be a bit tricky to interpret, not least of all because we do not know which point is which taxon.#
+# We can fix this by adding the taxon names:#
+text(pco.data[, PCOx], pco.data[, PCOy], rownames(pco.data))
+tree.data <- read.tree("http://www.graemetlloyd.com/firstmpt/Cullen_etal_2013a.tre")
+plot(tree.data)
+tree.data <- multi2di(tree.data)
+plot(tree.data)
+ages.data <- read.table("http://www.graemetlloyd.com/teaching/RE2014/Cullenages.txt", row.names=1, sep="\t", header=T)
 tree.data <- timePaleoPhy(tree.data, ages.data, type="mbl", vartime=2)
 tree.data$root.time
 geoscalePhylo function in the strap package:#
@@ -227,112 +430,147 @@ BeckLee_Tree
 summary(BeckLee_Tree)
 BeckLee_tree
 summary(BeckLee_tree)
-library(dispRity)
-?dispRity
+**Disparity analysis for early vertebrates, example using Keating *et al.* 2016 and the Github release of dispRity**#
+***#
+#
+**read in packages**#
+```r#
 library(dispRity)#
 library(geomorph)#
 library(vegan)#
-library(cluster)
-setwd("~/Documents/Side_projects/Masters_writeup/dispRity_Pipeline")#
-Kdata <- ReadMorphNexus("Keating16.nex")
+library(cluster)#
+library(Claddis)#
+```#
+#
+**set directory and read in nexus file**#
+```r#
+setwd("~/Documents/Side_projects/Masters_writeup/EarlyVerts_R_Code/dispRity_Pipeline")#
+Kdata <- ReadMorphNexus("Keating16.nex")#
+Ktree <- read.nexus("KeatMaj.tre")#
+Kdates <- read.csv("Keating16Dates.csv", header=TRUE,row.names=1)#
+```#
+**Ordinate - currently lazily using default Claddis.ordination settings, but have a think**#
+```r#
+OrdKdata <- read.tree("KeatMaj.tre")#
+```#
+#
+**Doing disparity through time (disparity metric used the sum of variances as default)**#
+```r#
+#tree needs a root time - for now guessed at start of Cambrian, choose a better one#
+Ktree$root.time <- 541#
+#Order dates columns to match tip labels in tree#
+Kdates <- Kdates[match(Ktree$tip.label, rownames(Kdates)),]#
+#Date tree using Claddis tree dating - check appropriate#
+DatedKtree<-DatePhylo(Ktree, Kdates, method="equal", rlen=1)#
+## Measuring disparity through time using three time subsets#
+disparity_data <- dispRity.through.time(OrdKdata, DatedKtree, time = 3, metric = c(sum, variances))#
+## Here I get an error I need to fix to do with not having enough extant tips
+library(dispRity)#
+library(geomorph)#
+library(vegan)#
+library(cluster)#
 library(Claddis)
-setwd("~/Documents/Side_projects/Masters_writeup/dispRity_Pipeline")#
-Kdata <- ReadMorphNexus("Keating16.nex")
-Kdata
-Claddis.ordination(Kdata)
-?Claddis.ordination
-OrdKdata <- Claddis.ordination(Kdata)
-OrdKdata <- read.tre("KeatMaj.tre")
+setwd("~/Documents/Side_projects/Masters_writeup/EarlyVerts_R_Code/dispRity_Pipeline")#
+Kdata <- ReadMorphNexus("Keating16.nex")#
+Ktree <- read.nexus("KeatMaj.tre")#
+Kdates <- read.csv("Keating16Dates.csv", header=TRUE,row.names=1)
 OrdKdata <- read.tree("KeatMaj.tre")
-OrdKdata <- read.nex("KeatMaj.tre")
-?ape
+setwd("~/Documents/Side_projects/Masters_writeup/EarlyVerts_R_Code/dispRity_Pipeline")#
+Kdata <- ReadMorphNexus("Keating16.nex")#
+Ktree <- read.nexus("KeatMaj.tre")#
+Kdates <- read.csv("Keating16Dates.csv", header=TRUE,row.names=1)
+OrdKdata <- read.tree("KeatMaj.tre")
 OrdKdata <- read.nexus("KeatMaj.tre")
-OrdKdata
+#tree needs a root time - for now guessed at start of Cambrian, choose a better one#
+Ktree$root.time <- 541#
+#Order dates columns to match tip labels in tree#
+Kdates <- Kdates[match(Ktree$tip.label, rownames(Kdates)),]#
+#Date tree using Claddis tree dating - check appropriate#
+DatedKtree<-DatePhylo(Ktree, Kdates, method="equal", rlen=1)#
+## Measuring disparity through time using three time subsets#
+disparity_data <- dispRity.through.time(OrdKdata, DatedKtree, time = 3, metric = c(sum, variances))#
+## Here I get an error I need to fix to do with not having enough extant tips
 OrdKdata <- Claddis.ordination(Kdata)
-plot(Ktree, cex = 0.8) #
-axisPhylo(root = 140)#
-nodelabels(cex = 0.5)
-Ktree <- read.nexus("KeatMaj.tre")
-plot(Ktree, cex = 0.8) #
-axisPhylo(root = 140)#
-nodelabels(cex = 0.5)
-plot(Ktree, cex = 0.8) #
-axisPhylo(root = 140)#
-nodelabels(cex = 0.5)
-Kdates <- read.csv("Keating16Dates.csv")
-KDates
-Kdates
-Kdates <- read.csv("Keating16Dates.csv", Header="true")
-?read.csv
-Kdates <- read.csv("Keating16Dates.csv", header="true")
-Kdates <- read.csv("Keating16Dates.csv", header=true)
-Kdates <- read.csv("Keating16Dates.csv", header=TRUE)
-Kdates
-Kdates <- read.csv("Keating16Dates.csv", header="true",row.names=1)
-Kdates <- read.csv("Keating16Dates.csv", header="TRUE",row.names=1)
-Kdates <- read.csv("Keating16Dates.csv", header=TRUE,row.names=1)
-Kdates
-plot(Ktree, cex = 0.8) #
-axisPhylo(root = 500)#
-nodelabels(cex = 0.5)
-data(BeckLee_tree)
-BeckLee_tree
-Ktree$root.time <- 541
-Ktree
-Ktree$root.time
-disparity_data <- dispRity.through.time(OrdKdata, Ktree, time = 3, metric = c(sum, variances))
-data(BeckLee_tree)#
-plot(BeckLee_tree, cex = 0.8) #
-axisPhylo(root = 140)#
-nodelabels(cex = 0.5)
-tree_1 <-DatePhylo(Ktree, Kdates, method="equal", rlen=1)
-Datephylo?
-g
-?Datephylo
-?DatePhylo
-?DatePhylo
-library(paleotree)
-?TimePaleoPhy
-?timePaleoPhy
-?DatePhylo
-summary(Ktree)
-Kdates
-plot(Ktree)
-Ktree
-Ktree$Tip.labels
-Ktree$tip.labels
-Ktree$taxa
-Ktree$tip.label
-Kdates[match(Ktree$tip.label, )]df <- data.frame(name=letters[1:4], value=c(rep(TRUE, 2), rep(FALSE, 2)))
-df <- data.frame(name=letters[1:4], value=c(rep(TRUE, 2), rep(FALSE, 2)))
-df
-target <- c("b", "c", "a", "d")
-df[match(target, df$name),]
-df
-df<-df[match(target, df$name),]
-df
-summary(Kdates)
-Kdates[match(Ktree$tip.label, Kdates$[,1])]
-colnames(df)
-Kates$header
-Kdates$header
-Kdates$row.names
-Kdates[match(Ktree$tip.label, Kdates$row.names)]
-?match
-Kdates[match(Ktree$tip.label, row.names(Kdates))]
-Kdates[match(Ktree$tip.label, rownames(Kdates))]
-Kdates[match(Ktree$tip.label, rownames(Kdates)),]
-Kdates
-Ktree$tip.label
-Kdates <- read.csv("Keating16Dates.csv", header=TRUE,row.names=1)
-Kdates[match(Ktree$tip.label, rownames(Kdates)),]
-Kdates <- Kdates[match(Ktree$tip.label, rownames(Kdates)),]
-Kdates
-tree_1 <-DatePhylo(Ktree, Kdates, method="equal", rlen=1)
-tree_1
-plot(tree_1)
-DatedKtree<-DatePhylo(Ktree, Kdates, method="equal", rlen=1)
-disparity_data <- dispRity.through.time(OrdKdata, DatedKtree, time = 3, metric = c(sum, variances))
-?disparity.through.time
-?dispRity.through.time
-disparity_data <- dispRity.through.time(OrdKdata, DatedKtree, time = 3, metric = c(sum, variances))
+#tree needs a root time - for now guessed at start of Cambrian, choose a better one#
+Ktree$root.time <- 541#
+#Order dates columns to match tip labels in tree#
+Kdates <- Kdates[match(Ktree$tip.label, rownames(Kdates)),]#
+#Date tree using Claddis tree dating - check appropriate#
+DatedKtree<-DatePhylo(Ktree, Kdates, method="equal", rlen=1)#
+## Measuring disparity through time using three time subsets#
+disparity_data <- dispRity.through.time(OrdKdata, DatedKtree, time = 3, metric = c(sum, variances))#
+## Here I get an error I need to fix to do with not having enough extant tips
+(time_bins <- rev(seq(from = 250, to = 600, by = 50)))
+(binned_morphospace <- chrono.subsets(data = OrdKdata, tree = Ktree, method = "discrete", time = time_bins, inc.nodes = FALSE,FADLAD = Kdates))
+class(binned_morphospace)
+names(binned_morphospace)
+(boot_bin_morphospace <- boot.matrix(binned_morphospace))
+boot_bin_morphospace
+## Bootstrapping each time subset 100 times and rarefying them #
+(rare_bin_morphospace <- boot.matrix(binned_morphospace, bootstraps = 100,#
+    rarefaction = 6))
+#Split dataset into subsets#
+(binned_Kdata <- chrono.subsets(data = OrdKdata, tree = Ktree, method = "discrete", time = time_bins, inc.nodes = FALSE,FADLAD = Kdates))#
+#
+# Bootstrapping with bonus rarefaction#
+(rare_bin_Kdata <- boot.matrix(binned_Kdata, bootstraps = 100,#
+    rarefaction = 6))
+(boot_disparity_Kdata <- dispRity(boot_bin_Kdata, metric = c(sum, variances)))
+(boot_disparity_Kdata <- dispRity(rare_bin_Kdata, metric = c(sum, variances)))
+boot_disparity_Kdata <- dispRity(rare_bin_Kdata, metric = c(sum, variances))
+#Make time bins (random 50my)#
+time_bins <- rev(seq(from = 250, to = 600, by = 50))#
+#
+#Split dataset into subsets#
+binned_Kdata <- chrono.subsets(data = OrdKdata, tree = Ktree, method = "discrete", time = time_bins, inc.nodes = FALSE,FADLAD = Kdates)#
+#
+# Bootstrapping with bonus rarefaction#
+rare_bin_Kdata <- boot.matrix(binned_Kdata, bootstraps = 100,#
+    rarefaction = 6)#
+#
+#Calculate disparity#
+boot_disparity_Kdata <- dispRity(rare_bin_Kdata, metric = c(sum, variances))
+summary(boot_disparity)
+summary(boot_disparity_Kdata)
+quartz(width = 10, height = 5) ; par(mfrow = (c(1,2)), bty = "n")
+plot(boot_disparity_Kdata, type = "continuous", main = "bootstrapped results")
+> #Plot it up#
+quartz(width = 10, height = 5) ; par(mfrow = (c(1,2)), bty = "n")#
+plot(boot_disparity_Kdata, type = "continuous", main = "bootstrapped results")
+###Doing disparity through time (disparity metric used the sum of variances as default)####
+#
+#tree needs a root time - for now guessed at start of Cambrian, choose a better one#
+Ktree$root.time <- 541#
+#
+#Order dates columns to match tip labels in tree#
+Kdates <- Kdates[match(Ktree$tip.label, rownames(Kdates)),]#
+#
+#Date tree using Claddis tree dating - check appropriate#
+DatedKtree<-DatePhylo(Ktree, Kdates, method="equal", rlen=1)#
+#
+#Make time bins (random 50my)#
+time_bins <- rev(seq(from = 250, to = 600, by = 50))#
+#
+#Split dataset into subsets#
+binned_Kdata <- chrono.subsets(data = OrdKdata, tree = Ktree, method = "discrete", time = time_bins, inc.nodes = FALSE,FADLAD = Kdates)#
+#
+#Bootstrapping #
+(boot_bin_Kdata <- boot.matrix(binned_Kdata))#
+#
+# Bootstrapping with bonus rarefaction#
+rare_bin_Kdata <- boot.matrix(binned_Kdata, bootstraps = 100,#
+    rarefaction = 6)#
+#
+#Calculate disparity for bootstrapped data#
+boot_disparity_Kdata <- dispRity(boot_bin_Kdata, metric = c(sum, variances))#
+#
+#Calculate disparity for rarefied data#
+rare_disparity_Kdata <- dispRity(rare_bin_Kdata, metric = c(sum, variances))#
+#
+#Plot it up#
+quartz(width = 10, height = 5) ; par(mfrow = (c(1,2)), bty = "n")#
+plot(boot_disparity_Kdata, type = "continuous", main = "bootstrapped results")#
+plot(rare_disparity_Kdata, type = "continuous", main = "rarefied results")
+##Testing bins difference#
+test.dispRity(boot_disparity_Kdata, test = wilcox.test, comparison = "sequential",#
+    correction = "bonferroni")

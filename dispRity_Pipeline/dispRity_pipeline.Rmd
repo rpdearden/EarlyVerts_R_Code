@@ -19,26 +19,72 @@ library(cluster)
 library(Claddis)
 ```
 
-Set directory and read in nexus file
+Set directory and read in nexus file - NOTE ReadMorphNexus reads in both ? and - as NA - instead I have read the matrix in as a csv file (by copying and pasting from Mesquite because I am basic)
 
 ```{r warning=FALSE}
 setwd("~/Documents/Side_projects/Masters_writeup/EarlyVerts_R_Code/dispRity_Pipeline")
-Kdata <- ReadMorphNexus("Keating16.nex")
+#Kdata <- ReadMorphNexus("Keating16.nex")
 Ktree <- read.nexus("KeatMaj.tre")
 Kdates <- read.csv("Keating16Dates.csv", header=TRUE,row.names=1)
+Kmatrix <- read.csv("Keating16.csv", header=TRUE, row.names=1, stringsAsFactors = FALSE, na.strings="?") #Reads ? as NA?
 ```
 
-Ordinate - currently lazily using default Claddis.ordination settings, but have a think about appropriate methods
+Change values as detailed in that Deline paper (find)
 ```{r warning=FALSE}
-OrdKdata <- Claddis.ordination(Kdata)
+#Replace - with -1 (will become 0 later)
+Kmatrix[Kmatrix=="-"] <- -1
+#Convert all remaining character columns into numeric
+indx <- sapply(Kmatrix, is.character)
+Kmatrix[indx] <- lapply(Kmatrix[indx], function(Kmatrix) as.numeric(as.character(Kmatrix))) 
+ #Add 1 to all values
+Kdata <- Kmatrix+1
+
 ```
 
+Ordinate - this is the NMDS procedure I used in original project - possible to refine?
+```{r warning=FALSE}
+Kdistances=daisy(Kdata, metric=c("gower"))
+kdataNMDS<-metaMDS(Kdistances, k=3, zerodist="add")
+#n.b. Ordination is stored in:
+Ordkdata<-kdataNMDS$points
+```
+
+Plot first two axes of NMDS - plot looks like the back end of a bus but not much point twiddling currently
+```{r warning=FALSE}
+#Normal with text
+plot(kdataNMDS)
+text(kdataNMDS, cex=0.8)
+```
+
+Test stresses
+```{r warning=FALSE, results='hide'}
+#Run metaMDS with different numbers of axes
+NMDS1=metaMDS(Kdistances, k=1, zerodist="add")
+NMDS2=metaMDS(Kdistances, k=2, zerodist="add")
+NMDS3=metaMDS(Kdistances, k=3, zerodist="add")
+NMDS4=metaMDS(Kdistances, k=4, zerodist="add")
+NMDS5=metaMDS(Kdistances, k=5, zerodist="add")
+NMDS6=metaMDS(Kdistances, k=6, zerodist="add")
+NMDS7=metaMDS(Kdistances, k=7, zerodist="add")
+NMDS8=metaMDS(Kdistances, k=8, zerodist="add")
+NMDS9=metaMDS(Kdistances, k=9, zerodist="add")
+NMDS10=metaMDS(Kdistances, k=10, zerodist="add")
+
+#Make vector containing stresses
+Stresses=c(NMDS1$stress, NMDS2$stress, NMDS3$stress, NMDS4$stress, NMDS5$stress, NMDS6$stress, NMDS7$stress, NMDS8$stress, NMDS9$stress, NMDS10$stress)
+#Plot it
+barplot(Stresses, ylim=c(0, 0.30), names.arg=c(1:10), xlab="No. of axes", ylab="Stress")
+```
+
+
+<!-- Alternatively originally did like below lazily using default Claddis.ordination settings, but have a think about appropriate methods -->
+<!-- ```{r warning=FALSE} -->
+<!-- OrdKdata <- Claddis.ordination(Kdata) -->
+<!-- ``` -->
 
 ###Doing disparity through time (disparity metric used the sum of variances as default)###
 
-
 tree requires a root time - for now guessed at start of Cambrian, choose a better one
-
 ```{r warning=FALSE}
 Ktree$root.time <- 541
 ```
@@ -60,7 +106,7 @@ time_bins <- rev(seq(from = 250, to = 600, by = 50))
 
 Split dataset into subsets
 ```{r warning=FALSE}
-binned_Kdata <- chrono.subsets(data = OrdKdata, tree = Ktree, method = "discrete", time = time_bins, inc.nodes = FALSE,FADLAD = Kdates)
+binned_Kdata <- chrono.subsets(data = Ordkdata, tree = Ktree, method = "discrete", time = time_bins, inc.nodes = FALSE,FADLAD = Kdates)
 ```
 
 Bootstrapping , first just that and then with bonus rarefaction
@@ -77,12 +123,12 @@ rare_disparity_Kdata <- dispRity(rare_bin_Kdata, metric = c(sum, variances))
 
 Plot it up
 ```{r warning=FALSE}
-#quartz(width = 10, height = 5) ; par(mfrow = (c(1,2)), bty = "n")
+quartz(width = 15, height = 5) ; par(mfrow = (c(1,2)), bty = "n")
 plot(boot_disparity_Kdata, type = "continuous", main = "bootstrapped results")
 plot(rare_disparity_Kdata, type = "continuous", main = "rarefied results")
 ```
 
-Testing bins difference - won't work with this dataset as not enough data
-```{r warning=FALSE}
-#test.dispRity(boot_disparity_Kdata, test = wilcox.test, comparison = "sequential",correction = "bonferroni")
-```
+<!-- Testing bins difference - won't work with this dataset as not enough data -->
+<!-- ```{r warning=FALSE} -->
+<!-- #test.dispRity(boot_disparity_Kdata, test = wilcox.test, comparison = "sequential",correction = "bonferroni") -->
+<!-- ``` -->

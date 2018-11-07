@@ -23,10 +23,10 @@ Set directory and read in nexus file - NOTE ReadMorphNexus reads in both ? and -
 
 ```{r warning=FALSE}
 setwd("~/Documents/Side_projects/Masters_writeup/EarlyVerts_R_Code/dispRity_Pipeline")
-#Kdata <- ReadMorphNexus("Keating16.nex")
-Ktree <- read.nexus("KeatMaj.tre")
-Kdates <- read.csv("Keating16Dates.csv", header=TRUE,row.names=1)
-Kmatrix <- read.csv("Keating16.csv", header=TRUE, row.names=1, stringsAsFactors = FALSE, na.strings="?") #Reads ? as NA?
+#Kdata <- ReadMorphNexus("../Keating16.nex")
+Ktree <- read.nexus("../KeatMaj.tre")
+Kdates <- read.csv("../Keating16Dates.csv", header=TRUE,row.names=1)
+Kmatrix <- read.csv("../Keating16.csv", header=TRUE, row.names=1, stringsAsFactors = FALSE, na.strings="?") #Reads ? as NA?
 ```
 
 Change values as detailed in that Deline paper (find)
@@ -56,7 +56,7 @@ plot(kdataNMDS)
 text(kdataNMDS, cex=0.8)
 ```
 
-Test stresses
+Test stresses (results hidden cos long)
 ```{r warning=FALSE, results='hide'}
 #Run metaMDS with different numbers of axes
 NMDS1=metaMDS(Kdistances, k=1, zerodist="add")
@@ -123,7 +123,7 @@ rare_disparity_Kdata <- dispRity(rare_bin_Kdata, metric = c(sum, variances))
 
 Plot it up
 ```{r warning=FALSE}
-quartz(width = 15, height = 5) ; par(mfrow = (c(1,2)), bty = "n")
+quartz(width = 10, height = 5) ; par(mfrow = (c(1,2)), bty = "n")
 plot(boot_disparity_Kdata, type = "continuous", main = "bootstrapped results")
 plot(rare_disparity_Kdata, type = "continuous", main = "rarefied results")
 ```

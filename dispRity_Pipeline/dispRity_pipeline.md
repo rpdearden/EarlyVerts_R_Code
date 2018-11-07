@@ -21,10 +21,10 @@ Set directory and read in nexus file - NOTE ReadMorphNexus reads in both ? and -
 
 ``` r
 setwd("~/Documents/Side_projects/Masters_writeup/EarlyVerts_R_Code/dispRity_Pipeline")
-#Kdata <- ReadMorphNexus("Keating16.nex")
-Ktree <- read.nexus("KeatMaj.tre")
-Kdates <- read.csv("Keating16Dates.csv", header=TRUE,row.names=1)
-Kmatrix <- read.csv("Keating16.csv", header=TRUE, row.names=1, stringsAsFactors = FALSE, na.strings="?") #Reads ? as NA?
+#Kdata <- ReadMorphNexus("../Keating16.nex")
+Ktree <- read.nexus("../KeatMaj.tre")
+Kdates <- read.csv("../Keating16Dates.csv", header=TRUE,row.names=1)
+Kmatrix <- read.csv("../Keating16.csv", header=TRUE, row.names=1, stringsAsFactors = FALSE, na.strings="?") #Reads ? as NA?
 ```
 
 Change values as detailed in that Deline paper (find)
@@ -47,46 +47,45 @@ kdataNMDS<-metaMDS(Kdistances, k=3, zerodist="add")
 ```
 
     ## Run 0 stress 0.0604045 
-    ## Run 1 stress 0.06528009 
-    ## Run 2 stress 0.06040486 
-    ## ... Procrustes: rmse 8.933875e-05  max resid 0.0002144964 
-    ## ... Similar to previous best
-    ## Run 3 stress 0.0604063 
-    ## ... Procrustes: rmse 0.000477657  max resid 0.00133977 
-    ## ... Similar to previous best
-    ## Run 4 stress 0.07103663 
-    ## Run 5 stress 0.06538837 
-    ## Run 6 stress 0.06040466 
-    ## ... Procrustes: rmse 0.0005267043  max resid 0.001238408 
-    ## ... Similar to previous best
-    ## Run 7 stress 0.06040424 
+    ## Run 1 stress 0.06740939 
+    ## Run 2 stress 0.06040362 
     ## ... New best solution
-    ## ... Procrustes: rmse 0.001450056  max resid 0.00270684 
+    ## ... Procrustes: rmse 0.000971794  max resid 0.002393531 
     ## ... Similar to previous best
-    ## Run 8 stress 0.07143277 
-    ## Run 9 stress 0.06606869 
-    ## Run 10 stress 0.0674164 
-    ## Run 11 stress 0.06606065 
-    ## Run 12 stress 0.06527616 
-    ## Run 13 stress 0.06040474 
-    ## ... Procrustes: rmse 0.0003243256  max resid 0.000873928 
+    ## Run 3 stress 0.06741132 
+    ## Run 4 stress 0.07373036 
+    ## Run 5 stress 0.06040495 
+    ## ... Procrustes: rmse 0.0008781325  max resid 0.00178591 
     ## ... Similar to previous best
-    ## Run 14 stress 0.07135783 
-    ## Run 15 stress 0.06040394 
+    ## Run 6 stress 0.06527339 
+    ## Run 7 stress 0.06741856 
+    ## Run 8 stress 0.06040343 
     ## ... New best solution
-    ## ... Procrustes: rmse 0.0004252888  max resid 0.001142124 
+    ## ... Procrustes: rmse 0.0006313804  max resid 0.001823449 
     ## ... Similar to previous best
-    ## Run 16 stress 0.0604056 
-    ## ... Procrustes: rmse 0.0008001313  max resid 0.0022685 
+    ## Run 9 stress 0.06538771 
+    ## Run 10 stress 0.06040327 
+    ## ... New best solution
+    ## ... Procrustes: rmse 0.0006603859  max resid 0.00133285 
     ## ... Similar to previous best
-    ## Run 17 stress 0.0604043 
-    ## ... Procrustes: rmse 0.0001459228  max resid 0.0002521625 
+    ## Run 11 stress 0.06040642 
+    ## ... Procrustes: rmse 0.00145851  max resid 0.002842305 
     ## ... Similar to previous best
-    ## Run 18 stress 0.06742327 
-    ## Run 19 stress 0.06040459 
-    ## ... Procrustes: rmse 0.0005892338  max resid 0.002006138 
+    ## Run 12 stress 0.06533317 
+    ## Run 13 stress 0.06040473 
+    ## ... Procrustes: rmse 0.0005108163  max resid 0.001287002 
     ## ... Similar to previous best
-    ## Run 20 stress 0.0713563 
+    ## Run 14 stress 0.06609387 
+    ## Run 15 stress 0.06040453 
+    ## ... Procrustes: rmse 0.0005568569  max resid 0.001581383 
+    ## ... Similar to previous best
+    ## Run 16 stress 0.07092057 
+    ## Run 17 stress 0.06040602 
+    ## ... Procrustes: rmse 0.000841666  max resid 0.002166513 
+    ## ... Similar to previous best
+    ## Run 18 stress 0.06402837 
+    ## Run 19 stress 0.06604374 
+    ## Run 20 stress 0.06527673 
     ## *** Solution reached
 
 ``` r
@@ -109,7 +108,7 @@ text(kdataNMDS, cex=0.8)
 
 ![](dispRity_pipeline_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
-Test stresses
+Test stresses (results hidden cos long)
 
 ``` r
 #Run metaMDS with different numbers of axes
@@ -185,7 +184,7 @@ rare_disparity_Kdata <- dispRity(rare_bin_Kdata, metric = c(sum, variances))
 Plot it up
 
 ``` r
-quartz(width = 15, height = 5) ; par(mfrow = (c(1,2)), bty = "n")
+quartz(width = 10, height = 5) ; par(mfrow = (c(1,2)), bty = "n")
 plot(boot_disparity_Kdata, type = "continuous", main = "bootstrapped results")
 plot(rare_disparity_Kdata, type = "continuous", main = "rarefied results")
 ```

@@ -29,7 +29,8 @@ Kdates <- read.csv("../Keating16Dates.csv", header=TRUE,row.names=1)
 Kmatrix <- read.csv("../Keating16.csv", header=TRUE, row.names=1, stringsAsFactors = FALSE, na.strings="?") #Reads ? as NA?
 ```
 
-Change values as detailed in that Deline paper (find)
+This chunk codes ? as NA, - as 0 and bumps all scorings up one, to differentiate between inapplicables and unknowns.  This follows the method of [Deline 2009](http://www.bioone.org/doi/10.1666/08028.1), [Deline and Ausich 2011](https://www.cambridge.org/core/journals/paleobiology/article/testing-the-plateau-a-reexamination-of-disparity-and-morphologic-constraints-in-early-paleozoic-crinoids/1952AFA60EAFED43C2E221F79650F992), and [Deline *et al.* 2018](http://www.pnas.org/content/115/38/E8909)
+
 ```{r warning=FALSE}
 #Replace - with -1 (will become 0 later)
 Kmatrix[Kmatrix=="-"] <- -1
@@ -115,7 +116,7 @@ boot_bin_Kdata <- boot.matrix(binned_Kdata)
 rare_bin_Kdata <- boot.matrix(binned_Kdata, bootstraps = 100,rarefaction = 6)
 ```
 
-Calculate disparity for both datasets
+Calculate disparity for both datasets - n.b. need to establsih whether metric is appropriate for NMDS
 ```{r warning=FALSE}
 boot_disparity_Kdata <- dispRity(boot_bin_Kdata, metric = c(sum, variances))
 rare_disparity_Kdata <- dispRity(rare_bin_Kdata, metric = c(sum, variances))
@@ -132,3 +133,58 @@ plot(rare_disparity_Kdata, type = "continuous", main = "rarefied results")
 <!-- ```{r warning=FALSE} -->
 <!-- #test.dispRity(boot_disparity_Kdata, test = wilcox.test, comparison = "sequential",correction = "bonferroni") -->
 <!-- ``` -->
+
+###Comparing disparity between groups###
+
+####Custom groups####
+
+Split dataset into two groups - bony vs sluggy.  n.b. for bigger dataset should be able to do this by reading in group members from a csv
+```{r warning=FALSE}
+#Designate groups
+groups <- list("sluggy"=c("Cephalochordata", "Tunicata", "Myxinoidea", "Petromyzontida", "Jamoytius", "Euphanerops", "Euconodonta"), bony=c("Heterostraci", "Arandaspida", "Astraspis", "Lasanius", "Birkenia", "Pterygolepis", "Rhyncholepis", "Cowielepis", "Pharyngolepis", "Osteostraci", "Jawed_vertebrates", "Galeaspida", "Loganellia" ,"Turinia"))
+#Make into subsets for disparity
+Bonesgroup <- custom.subsets(Ordkdata, group=groups)
+```
+
+Rarefy/bootstrap dataset and calculate disparity (choose appropriate methods)
+```{r warning=FALSE}
+Bonesgroup_rare <- boot.matrix(Bonesgroup, bootstraps = 100,rarefaction = 6)
+Bonesgroup_disp <- dispRity(Bonesgroup_rare, metric = c(sum, variances))
+```
+
+Test differences using a Wilcox test (check appropriate)
+```{r warning=FALSE}
+Bonesgroup_Wilcox <- test.dispRity(Bonesgroup_disp, test=wilcox.test)
+```
+
+Plot it with a p value
+```{r warning=FALSE}
+plot(Bonesgroup_disp, main = "Bones v non-bones")
+text(1.5, 4000, paste0("p=",round(Bonesgroup_Wilcox[[2]][[1]], digit = 5)))
+```
+
+####Clade based groups####
+
+Split dataset into groups based on the clades in the phylogeny
+```{r warning=FALSE}
+#Will make a group for every clade in the tree
+Cladesgroup <- custom.subsets(Ordkdata, group=Ktree)
+```
+Rarefy/bootstrap dataset and calculate disparity (choose appropriate methods)
+```{r warning=FALSE}
+Cladesgroup_rare <- boot.matrix(Cladesgroup, bootstraps = 100,rarefaction = 6)
+Cladesgroup_disp <- dispRity(Cladesgroup_rare, metric = c(sum, variances))
+```
+
+Test differences using a Wilcox test (check appropriate)
+```{r warning=FALSE}
+Cladesgroup_Wilcox <- test.dispRity(Cladesgroup_disp, test=wilcox.test)
+```
+
+Plot it with a p value n.b. would need to work out an understandable way of plotting this! Maybe only need to choose big clades
+```{r warning=FALSE}
+plot(Cladesgroup_disp, main = "Different clades")
+text(1.5, 4000, paste0("p=",round(Cladesgroup_Wilcox[[2]][[1]], digit = 5)))
+plot(Ktree)
+nodelabels()
+```

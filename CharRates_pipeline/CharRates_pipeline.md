@@ -46,6 +46,8 @@ geoscalePhylo(ladderize(Ktree), cex.age=0.6, cex.ts=0.8, cex.tip=0.8)
 <!-- drop.names <- rownames(ages.tree)[!nms.id]         # switches labelling of TRUE and FALSE #switched up from below to fix -->
 <!-- ages.tree <- as.matrix(ages.tree[nms.id,])         # saves the labelled taxa -->
 <!-- tree.data <- drop.tip(tree.data, drop.names)   # returns a list of taxa with complete data -->
+### Plotting rates on branches and nodes
+
 Discrete character rates with Claddis
 
 ``` r
@@ -53,13 +55,9 @@ Discrete character rates with Claddis
 rate.data <- DiscreteCharacterRate(Ktree, Kdata, seq(Ktree$root.time, Ktree$root.time - max(diag(vcv(Ktree))), length.out=6), alpha=0.01)
 ```
 
-    ## H_0 - all rates equal across time bins - cannot be rejected at an alpha of 0.01 (Actual p = 0.0211606129017511).
-    ## Calculations of per-bin rates aborted.
-
-    ## H_0 - all rates equal across time bins - cannot be rejected at an alpha of 0.01 (Actual p = 0.0211606129017511).
-    ## A single rate of 0.415425241789986is preferred.
-
-    ## H_0 - all rates equal across the tree - is rejected at an alpha of 0.01 (actual p = 1.08972876567398e-19).
+    ## H_0 - all rates equal across time bins - is rejected at an alpha of 0.01 (actual p = 0.00953766972459096).
+    ## Continuing to per-bin rate calculations.
+    ## H_0 - all rates equal across the tree - is rejected at an alpha of 0.01 (actual p = 8.64544202056921e-21).
     ## Continuing to per-branch and per-clade rate calculations.
 
 Plot with edges
@@ -101,3 +99,7 @@ nodelabels(node=rate.data$node.results[, "node"][!is.na(node.color)], pch=21, co
 ``` r
 #dev.off()
 ```
+
+### Plotting rates through time
+
+Work out if I can do this in Claddis

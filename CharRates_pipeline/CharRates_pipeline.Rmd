@@ -46,7 +46,7 @@ geoscalePhylo(ladderize(Ktree), cex.age=0.6, cex.ts=0.8, cex.tip=0.8)
 <!-- ages.tree <- as.matrix(ages.tree[nms.id,]) 		# saves the labelled taxa -->
 <!-- tree.data <- drop.tip(tree.data, drop.names)	# returns a list of taxa with complete data -->
 
-
+###Plotting rates on branches and nodes###
 Discrete character rates with Claddis
 ```{r warning=FALSE}
 #Calculate rates
@@ -79,3 +79,7 @@ geoscalePhylo(Ktree, cex.age=0.6, cex.ts=0.8, cex.tip=0.8)
 nodelabels(node=rate.data$node.results[, "node"][!is.na(node.color)], pch=21, col="black", bg=node.color[!is.na(node.color)])
 #dev.off()
 ```
+
+###Plotting rates through time###
+
+Work out if I can do this in Claddis

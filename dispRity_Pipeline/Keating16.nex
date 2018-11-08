@@ -1,0 +1,185 @@
+#NEXUS
+[written Thu Nov 08 09:40:23 GMT 2018 by Mesquite  version 3.2 (build 801) at lb-rpd14lap/192.168.1.99]
+
+BEGIN TAXA;
+	TITLE Taxa;
+	DIMENSIONS NTAX=21;
+	TAXLABELS
+		Cephalochordata Tunicata Myxinoidea Petromyzontida Heterostraci Astraspis Arandaspida Jamoytius Euphanerops Osteostraci Galeaspida Loganellia Turinia Jawed_vertebrates Euconodonta Birkenia Pharyngolepis Rhyncholepis Pterygolepis Cowielepis Lasanius 
+	;
+
+END;
+
+
+BEGIN CHARACTERS;
+	TITLE  Character_Matrix;
+	DIMENSIONS  NCHAR=120;
+	FORMAT DATATYPE = STANDARD GAP = - MISSING = ? SYMBOLS = "  0 1 2 3";
+	CHARSTATELABELS 
+		1 Neural_crest_, 2 Olfactory_peduncles, 3 Pineal_organ_, 4 Adenohypophysis, 5 Adenohypophysis, 6 Optic_tectum_, 7 Cerebellar_primordia_, 8 Pretrematic_branches_in_branchial_nerves, 9 Flattened_spinal_chord_, 10 Ventral_and_dorsal_spinal_nerve_roots_united, 11 Mauthner_fibres_in_central_nervous_system, 12 Retina, 13 Olfactory_organ_with_external_opening_, 14 'Nasohypophyseal opening serving respiration (nasohypophyseal duct)', 15 Single_nasohypophyseal_opening, 16 Position_of_nasohypophyseal_opening, 17 Olfactory_organ_unpaired_, 18 Extrinsic_eye_musculature, 19 Otic_capsule_anterior_to_branchial_series, 20 Semicircular_canals_in_labyrinth, 21 Vertical_semicircular_canals_forming_loops_that_are_separate_from_the_roof_of_the_utriculus, 22 Externally_open_endolymphatic_ducts, 23 Electroreceptive_cells_, 24 Sensory_lines_, 25 'Sensory-lines on head only', 26 'Sensory-line enclosed in grooves ', 27 'Pouch-shaped gills', 28 Single_confluent_branchial_opening, 29 Elongate_branchial_series, 30 Gill_openings_lateral_and_arranged_in_slanting_row, 31 Position_of_gill_openings, 32 Opercular_flaps_associated_with_gill_openings, 33 Endodermal_gill_lamellae, 34 Gill_lamellae_with_filaments, 35 Mouth, 36 Oral_hood_, 37 Velum, 38 'Multi-chamber heart ', 39 Closed_pericardium, 40 Open_blood_system, 41 Paired_dorsal_aortae, 42 Large_lateral_head_vein_, 43 Lymphocytes, 44 Subaponeurotic_vascular_plexus_, 45 Dorsal_fin, 46 'Dorsal fin (position)', 47 Anal_fin_separate, 48 Fin_ray_supports, 49 'Paired antero-posterior skin folds ', 50 Constricted_pectoral_fins_with_endoskeletal_elements_, 51 'Pelvic fins/flap', 52 Tail_shape, 53 Chordal_disposition_relative_to_tail_development, 54 Preanal_median_fold_, 55 Ability_to_synthesise_creatine_phosphatase, 56 Visceral_arches_fused_to_the_neurocranium_, 57 Keratinous_teeth, 58 Circumoral_teeth_, 59 Circumoral_teeth_arranged_in_radiating_series, 60 Trematic_rings, 61 Arcualia_, 62 Piston_cartilage_and_apical_plate, 63 Midline_retractor_muscle_and_paired_protractor_muscles, 64 Transversely_biting_teeth_, 65 'Jaws (dorsoventral bite', 66 'Chondroitin 6-sulphate in cartilage', 67 Braincase_with_lateral_walls, 68 Neurocranium_entirely_closed_dorsally_and_covering_the_brain, 69 Occiput_enclosing_vagus_and_glossopharyngeal_nerves, 70 Annular_cartilage_, 71 Large_oral_disc, 72 Tentacle_cartilages, 73 Trunk_dermal_skeleton_, 74 Perichondral_bone_, 75 Calcified_cartilage, 76 Cartilage_composed_of_huge_clumped_chondrocytes, 77 Calcified_dermal_skeleton_, 78 Odontogenic_superficial_layer_of_dermal_skeleton, 79 Osteonal_vascular_middle_layer_of_the_dermal_skeleton, 80 Basal_laminated_layer_of_the_dermal_skeleton, 81 Isopedine, 82 Cellular_bone, 83 Dentine_, 84 Tubular_dentine, 85 'Tubular dentine present as mesodentine = 0, orthodentine = 1', 86 Enameloid, 87 'Cancellar layer in exoskeleton, with honeycomb-shaped cavities', 88 Scale_shape, 89 Costulate_tubercles, 90 'Oak-leaf-shaped tubercles', 91 Oral_plates, 92 Denticles_in_pharynx_, 93 Dermal_head_covering_in_adult_state_, 94 Large_unpaired_ventral_and_dorsal_dermal_plates_on_head, 95 Pineal_plate, 96 Massive_endoskeletal_head_shield_covering_the_gills_dorsally, 97 Sclerotic_ossicles_, 98 Ossified_endoskeletal_sclera_encapsulating_the_eyeCharacter_96, 99 High_blood_pressure, 100 Hyperosmoregulation, 101 Male_gametes_shed_directly_through_the_coelom, 102 Forward_migration_of_postotic_myomeres, 103 Larval_phase, 104 Pineal_opening, 105 External_nasal_opening, 106 Number_of_semicircular_canals_, 107 Neuromasts_in_sensory_lines_, 108 Relative_position_of_atrium_and_ventricle_of_heart, 109 Lymphocytes_antigen_receptors_, 110 'Paired antero-posterior skin folds extend along the trunk', 111 Ventral_arcualia, 112 Odontodes, 113 Head_skeleton, 114 'Inflected myomeres present in post-larval stage ', 115 Complex_myomere_shape, 116 Triradiate_postbranchial_spine, 117 Median_Dorsal_ridge_scales, 118 Hook_shaped_median_dorsal_ridge_scales, 119 Vascular_canal_system_in_dermal_scales_and_plates, 120 Scales_with_visceral_ribs ; 
+	MATRIX
+	Cephalochordata    0?10?00000000----??0-?00--0000001000100010000?000000010000?00??00?00000000000----0-------------000000011???????--1?-----
+	Tunicata           1?10?0000?000----??0-?00--010??00000000000000?0000000?0000?00??00?00000000000----0-------------000000011???????--0?-----
+	Myxinoidea         100101001101111010110001001001001000110010110?010000111110?111110000000100010----0-------------00000010?00000?1--11-----
+	Petromyzontida     10111110101110111111001110101100110111110010110100011011111111110110011000010----0-------------00011111101110?0--11-----
+	Heterostraci       ?11???1?????0???1?0110?111111?00?100???????10?010003101?00-?1??00????000100?1111101111111110111000?????0?11????11??01010
+	Astraspis          ??1??????????????????0?1?0?01100???0???????1????000???1?0??????00??????0100?11111011110011?010?000?????0??1????11??0101?
+	Arandaspida        ??1?????????1??????????110?00100??00???????10?01000??01?00-????00????0001???1111111101111110110010?????0??1????111?0??10
+	Jamoytius          ??????????????1????????????0010???00????????0???100??01?????????0????10010??1??????????1?0000-?000??????0????0??-110--??
+	Euphanerops        ??????????????????????????1?0????100????????0?1110011?1?????1???0????1001??11??????????1?0000-?000???????????01?-1?0--??
+	Osteostraci        ?011?11?????1011110111?111101?11?110111?01?111010102201100-?1??00?11100011101111111101011010101111?????10111???111101010
+	Galeaspida         ?111?11?????1111110111?111101?1??1101????1?1????000??01100-????00?1110001010110110???10010?01001???????1011?????1??0??1?
+	Loganellia         ???????????????????????111?01101???0????????11110001101?00-????00????000100?1100-01101?01001100000????????1????00??00-00
+	Turinia            ??????????????????????????1011?1???0???????????1000?1?1?00-????00????000100?1100-01111?01001100000?????????????00??00-00
+	Jawed_vertebrates  1111111101111?0?111111111100100101100111111011110112201000-01??0111110001110111111111100100110111111000012111?1111101010
+	Euconodonta        ??????????????????????????1?1???????????????0?01?001101?00-????10???????000?0----0-------------000?????????????-?1?0----
+	Birkenia           ??1?????????1?11?????0?????01100??00????????0?110001111?00-????00?????00100?11010010-1-10010101000?????10????-?101?11101
+	Pharyngolepis      ??1?????????1?11?????0?100?00100??00????????0?111001101?00-????00?????00100?1??????????10010100000?????10?1??0??01?110?1
+	Rhyncholepis       ??1?????????1?11?????0?100?01100??00????????0?111001111?00-????00?????00100?11010010-1-10010101000?????10?1??0?101?11111
+	Pterygolepis       ??1?????????1?11?????0?????01100??00????????0?110001111?00-????00?????00100?1?01?0????-10010101000?????10????-?101?11101
+	Cowielepis         ??1?????????1?11?????0?????01100??0?????????0?111001?01?00-????00?????00100?1??????????1?0?0101000?????10????0??01?111??
+	Lasanius           ???????????????????????????01100??00????????0???0001101?00-????00?????00100?1????????????00000-000???????????-??-??111??
+
+;
+
+END;
+BEGIN ASSUMPTIONS;
+	TYPESET * UNTITLED   =  unord:  1 -  120;
+
+END;
+
+BEGIN MESQUITECHARMODELS;
+	ProbModelSet * UNTITLED   =  'Mk1 (est.)':  1 -  120;
+END;
+
+Begin MESQUITE;
+		MESQUITESCRIPTVERSION 2;
+		TITLE AUTO;
+		tell ProjectCoordinator;
+		timeSaved 1541670023547;
+		getEmployee #mesquite.minimal.ManageTaxa.ManageTaxa;
+		tell It;
+			setID 0 5330530000619165155;
+		endTell;
+		getEmployee #mesquite.charMatrices.ManageCharacters.ManageCharacters;
+		tell It;
+			setID 0 8461761604800726485;
+			mqVersion 320;
+			checksumv 0 3 4272101925 null  getNumChars 120 numChars 120 getNumTaxa 21 numTaxa 21   short true   bits 15   states 15   sumSquaresStatesOnly 3287.0 sumSquares 3287.0 longCompressibleToShort false usingShortMatrix true   NumFiles 1 NumMatrices 1;
+			mqVersion;
+		endTell;
+		getWindow;
+		tell It;
+			suppress;
+			setResourcesState false false 100;
+			setPopoutState 300;
+			setExplanationSize 0;
+			setAnnotationSize 0;
+			setFontIncAnnot 0;
+			setFontIncExp 0;
+			setSize 1272 695;
+			setLocation 8 23;
+			setFont SanSerif;
+			setFontSize 10;
+			getToolPalette;
+			tell It;
+			endTell;
+			desuppress;
+		endTell;
+		getEmployee  #mesquite.charMatrices.BasicDataWindowCoord.BasicDataWindowCoord;
+		tell It;
+			showDataWindow #8461761604800726485 #mesquite.charMatrices.BasicDataWindowMaker.BasicDataWindowMaker;
+			tell It;
+				getWindow;
+				tell It;
+					setExplanationSize 30;
+					setAnnotationSize 20;
+					setFontIncAnnot 0;
+					setFontIncExp 0;
+					setSize 1172 623;
+					setLocation 8 23;
+					setFont SanSerif;
+					setFontSize 10;
+					getToolPalette;
+					tell It;
+					endTell;
+					setActive;
+					setTool mesquite.charMatrices.BasicDataWindowMaker.BasicDataWindow.arrow;
+					colorCells  #mesquite.charMatrices.NoColor.NoColor;
+					colorRowNames  #mesquite.charMatrices.TaxonGroupColor.TaxonGroupColor;
+					colorColumnNames  #mesquite.charMatrices.CharGroupColor.CharGroupColor;
+					colorText  #mesquite.charMatrices.NoColor.NoColor;
+					setBackground White;
+					toggleShowNames on;
+					toggleShowTaxonNames on;
+					toggleTight off;
+					toggleThinRows off;
+					toggleShowChanges on;
+					toggleSeparateLines off;
+					toggleShowStates on;
+					toggleAutoWCharNames on;
+					toggleAutoTaxonNames off;
+					toggleShowDefaultCharNames off;
+					toggleConstrainCW on;
+					toggleBirdsEye off;
+					toggleShowPaleGrid off;
+					toggleShowPaleCellColors off;
+					toggleShowPaleExcluded off;
+					togglePaleInapplicable on;
+					toggleShowBoldCellText off;
+					toggleAllowAutosize on;
+					toggleColorsPanel off;
+					toggleDiagonal on;
+					setDiagonalHeight 80;
+					toggleLinkedScrolling on;
+					toggleScrollLinkedTables off;
+				endTell;
+				showWindow;
+				getWindow;
+				tell It;
+					forceAutosize;
+				endTell;
+				getEmployee #mesquite.charMatrices.AlterData.AlterData;
+				tell It;
+					toggleBySubmenus off;
+				endTell;
+				getEmployee #mesquite.charMatrices.ColorByState.ColorByState;
+				tell It;
+					setStateLimit 9;
+					toggleUniformMaximum on;
+				endTell;
+				getEmployee #mesquite.charMatrices.ColorCells.ColorCells;
+				tell It;
+					setColor Red;
+					removeColor off;
+				endTell;
+				getEmployee #mesquite.categ.StateNamesStrip.StateNamesStrip;
+				tell It;
+					showStrip off;
+				endTell;
+				getEmployee #mesquite.charMatrices.AnnotPanel.AnnotPanel;
+				tell It;
+					togglePanel off;
+				endTell;
+				getEmployee #mesquite.charMatrices.CharReferenceStrip.CharReferenceStrip;
+				tell It;
+					showStrip off;
+				endTell;
+				getEmployee #mesquite.charMatrices.QuickKeySelector.QuickKeySelector;
+				tell It;
+					autotabOff;
+				endTell;
+				getEmployee #mesquite.charMatrices.SelSummaryStrip.SelSummaryStrip;
+				tell It;
+					showStrip off;
+				endTell;
+				getEmployee #mesquite.categ.SmallStateNamesEditor.SmallStateNamesEditor;
+				tell It;
+					panelOpen true;
+				endTell;
+			endTell;
+		endTell;
+		endTell;
+end;
+
+

@@ -42,9 +42,14 @@ Kdata <- Kmatrix+1
 
 ```
 
-Ordinate - this is the NMDS procedure I used in original project - possible to refine?
+Distances are calculated using Gower's coefficient.  This rescales the calculable distances based on the amount of information available, allowing for missing values (see Lloyd 2016).  Lloyd (2016) performs a comparison of distance methods and tentatively recommends MORD (maximum observable rescaled distance).  Worth using?
+
+Ordination is carried out with NMDS - resistant to missing data?  Probably worth doing with PCA as well.
+
 ```{r warning=FALSE}
+#Calculate distances with Gower's coefficient
 Kdistances=daisy(Kdata, metric=c("gower"))
+#Ordinate usiing NMDS
 kdataNMDS<-metaMDS(Kdistances, k=3, zerodist="add")
 #n.b. Ordination is stored in:
 Ordkdata<-kdataNMDS$points
@@ -76,6 +81,20 @@ Stresses=c(NMDS1$stress, NMDS2$stress, NMDS3$stress, NMDS4$stress, NMDS5$stress,
 #Plot it
 barplot(Stresses, ylim=c(0, 0.30), names.arg=c(1:10), xlab="No. of axes", ylab="Stress")
 ```
+
+Stacked ordination spaces in Claddis
+```{r warning=FALSE}
+#define
+time_slices <- c(541,485,444,419,359)
+#Define groups and assign randomly
+groups <- sample(x = c("red", "blue"), size = nrow(Ordkdata), replace = TRUE)
+names(groups) <- rownames(Ordkdata)
+#Make stacked ordination plots for geological periods
+StackPlot(ordination_axes=Ordkdata, ages=Kdates, groups=groups, time_slices=time_slices)
+
+```
+
+And MultiOrdinationSpace
 
 
 <!-- Alternatively originally did like below lazily using default Claddis.ordination settings, but have a think about appropriate methods -->
@@ -188,3 +207,5 @@ text(1.5, 4000, paste0("p=",round(Cladesgroup_Wilcox[[2]][[1]], digit = 5)))
 plot(Ktree)
 nodelabels()
 ```
+
+

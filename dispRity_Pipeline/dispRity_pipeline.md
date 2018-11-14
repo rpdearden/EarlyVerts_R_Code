@@ -39,56 +39,45 @@ Kmatrix[indx] <- lapply(Kmatrix[indx], function(Kmatrix) as.numeric(as.character
 Kdata <- Kmatrix+1
 ```
 
-Ordinate - this is the NMDS procedure I used in original project - possible to refine?
+Distances are calculated using Gower's coefficient. This rescales the calculable distances based on the amount of information available, allowing for missing values (see Lloyd 2016). Lloyd (2016) performs a comparison of distance methods and tentatively recommends MORD (maximum observable rescaled distance). Worth using?
+
+Ordination is carried out with NMDS - resistant to missing data? Probably worth doing with PCA as well.
 
 ``` r
+#Calculate distances with Gower's coefficient
 Kdistances=daisy(Kdata, metric=c("gower"))
+#Ordinate usiing NMDS
 kdataNMDS<-metaMDS(Kdistances, k=3, zerodist="add")
 ```
 
     ## Run 0 stress 0.0604045 
-    ## Run 1 stress 0.06527576 
-    ## Run 2 stress 0.06040395 
+    ## Run 1 stress 0.06740745 
+    ## Run 2 stress 0.0660669 
+    ## Run 3 stress 0.06846679 
+    ## Run 4 stress 0.06538884 
+    ## Run 5 stress 0.06527691 
+    ## Run 6 stress 0.06604312 
+    ## Run 7 stress 0.06741814 
+    ## Run 8 stress 0.06402216 
+    ## Run 9 stress 0.06527877 
+    ## Run 10 stress 0.06740944 
+    ## Run 11 stress 0.06402973 
+    ## Run 12 stress 0.06040652 
+    ## ... Procrustes: rmse 0.001579357  max resid 0.003346129 
+    ## ... Similar to previous best
+    ## Run 13 stress 0.06527515 
+    ## Run 14 stress 0.06527588 
+    ## Run 15 stress 0.06604696 
+    ## Run 16 stress 0.06040338 
     ## ... New best solution
-    ## ... Procrustes: rmse 0.0007544088  max resid 0.002035639 
+    ## ... Procrustes: rmse 0.001154672  max resid 0.002162448 
     ## ... Similar to previous best
-    ## Run 3 stress 0.06040529 
-    ## ... Procrustes: rmse 0.0002963393  max resid 0.0006273313 
+    ## Run 17 stress 0.06740945 
+    ## Run 18 stress 0.06846559 
+    ## Run 19 stress 0.06040543 
+    ## ... Procrustes: rmse 0.0007155639  max resid 0.001350343 
     ## ... Similar to previous best
-    ## Run 4 stress 0.06606242 
-    ## Run 5 stress 0.06040659 
-    ## ... Procrustes: rmse 0.001277747  max resid 0.002440082 
-    ## ... Similar to previous best
-    ## Run 6 stress 0.06040448 
-    ## ... Procrustes: rmse 0.001152708  max resid 0.002464454 
-    ## ... Similar to previous best
-    ## Run 7 stress 0.06527297 
-    ## Run 8 stress 0.06527559 
-    ## Run 9 stress 0.06040476 
-    ## ... Procrustes: rmse 0.0007305294  max resid 0.001594392 
-    ## ... Similar to previous best
-    ## Run 10 stress 0.06040512 
-    ## ... Procrustes: rmse 0.0004201785  max resid 0.001243751 
-    ## ... Similar to previous best
-    ## Run 11 stress 0.06040634 
-    ## ... Procrustes: rmse 0.001435873  max resid 0.00282819 
-    ## ... Similar to previous best
-    ## Run 12 stress 0.06604138 
-    ## Run 13 stress 0.06846655 
-    ## Run 14 stress 0.06606619 
-    ## Run 15 stress 0.06040571 
-    ## ... Procrustes: rmse 0.001452462  max resid 0.002996289 
-    ## ... Similar to previous best
-    ## Run 16 stress 0.06527634 
-    ## Run 17 stress 0.06040548 
-    ## ... Procrustes: rmse 0.00093868  max resid 0.002490749 
-    ## ... Similar to previous best
-    ## Run 18 stress 0.06604931 
-    ## Run 19 stress 0.06527646 
-    ## Run 20 stress 0.06040395 
-    ## ... New best solution
-    ## ... Procrustes: rmse 0.0009065248  max resid 0.001783019 
-    ## ... Similar to previous best
+    ## Run 20 stress 0.06539064 
     ## *** Solution reached
 
 ``` r
@@ -133,6 +122,22 @@ barplot(Stresses, ylim=c(0, 0.30), names.arg=c(1:10), xlab="No. of axes", ylab="
 ```
 
 ![](dispRity_pipeline_files/figure-markdown_github/unnamed-chunk-6-1.png)
+
+Stacked ordination spaces in Claddis
+
+``` r
+#define
+time_slices <- c(541,485,444,419,359)
+#Define groups and assign randomly
+groups <- sample(x = c("red", "blue"), size = nrow(Ordkdata), replace = TRUE)
+names(groups) <- rownames(Ordkdata)
+#Make stacked ordination plots for geological periods
+StackPlot(ordination_axes=Ordkdata, ages=Kdates, groups=groups, time_slices=time_slices)
+```
+
+![](dispRity_pipeline_files/figure-markdown_github/unnamed-chunk-7-1.png)
+
+And MultiOrdinationSpace
 
 <!-- Alternatively originally did like below lazily using default Claddis.ordination settings, but have a think about appropriate methods -->
 <!-- ```{r warning=FALSE} -->
@@ -192,7 +197,7 @@ plot(boot_disparity_Kdata, type = "continuous", main = "bootstrapped results")
 plot(rare_disparity_Kdata, type = "continuous", main = "rarefied results")
 ```
 
-![](dispRity_pipeline_files/figure-markdown_github/unnamed-chunk-14-1.png)
+![](dispRity_pipeline_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
 <!-- Testing bins difference - won't work with this dataset as not enough data -->
 <!-- ```{r warning=FALSE} -->
@@ -231,7 +236,7 @@ plot(Bonesgroup_disp, main = "Bones v non-bones")
 text(1.5, 4000, paste0("p=",round(Bonesgroup_Wilcox[[2]][[1]], digit = 5)))
 ```
 
-![](dispRity_pipeline_files/figure-markdown_github/unnamed-chunk-18-1.png)
+![](dispRity_pipeline_files/figure-markdown_github/unnamed-chunk-19-1.png)
 
 #### Clade based groups
 
@@ -262,11 +267,11 @@ plot(Cladesgroup_disp, main = "Different clades")
 text(1.5, 4000, paste0("p=",round(Cladesgroup_Wilcox[[2]][[1]], digit = 5)))
 ```
 
-![](dispRity_pipeline_files/figure-markdown_github/unnamed-chunk-22-1.png)
+![](dispRity_pipeline_files/figure-markdown_github/unnamed-chunk-23-1.png)
 
 ``` r
 plot(Ktree)
 nodelabels()
 ```
 
-![](dispRity_pipeline_files/figure-markdown_github/unnamed-chunk-22-2.png)
+![](dispRity_pipeline_files/figure-markdown_github/unnamed-chunk-23-2.png)

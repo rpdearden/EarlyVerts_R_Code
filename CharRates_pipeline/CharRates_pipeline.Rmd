@@ -15,6 +15,8 @@ Read in required packages
 library(Claddis)
 library(paleotree)
 library(strap)
+library(ape)
+library(plotrix)
 ```
 
 Set directory and read in nexus file - NOTE ReadMorphNexus reads in both ? and - as NA - instead I have read the matrix in as a csv file (by copying and pasting from Mesquite because I am basic)
@@ -24,6 +26,7 @@ setwd("~/Documents/Side_projects/Masters_writeup/EarlyVerts_R_Code/CharRates_pip
 Kdata <- ReadMorphNexus("../Keating16.nex")
 Ktree <- read.nexus("../KeatMaj.tre")
 Kdates <- read.csv("../Keating16Dates.csv", header=TRUE,row.names=1)
+tbins<-c(541,509,497,485.4,477.7,470,458.4,443.4,433.4,419.2,410.8,393.3,382.7,372.2,358.9,346.7,330.9,323.2,307,298.9,290.1,272.3,259.8,252.17)
 ```
 
 Prepare tree - think about how break polytomies (either many random iterations or by time of branching in paleotree)).  Also think about best way to date tree - better from molecular info?
@@ -50,7 +53,10 @@ geoscalePhylo(ladderize(Ktree), cex.age=0.6, cex.ts=0.8, cex.tip=0.8)
 Discrete character rates with Claddis
 ```{r warning=FALSE}
 #Calculate rates
-rate.data <- DiscreteCharacterRate(Ktree, Kdata, seq(Ktree$root.time, Ktree$root.time - max(diag(vcv(Ktree))), length.out=6), alpha=0.01)
+#rate.data <- DiscreteCharacterRate(Ktree, Kdata, seq(Ktree$root.time, Ktree$root.time - max(diag(vcv(Ktree))), length.out=6), alpha=0.01)
+
+#With my time bins - check bins appropriate 
+rate.data <- DiscreteCharacterRate(Ktree, Kdata, tbins, alpha=0.01)
 ```
 Plot with edges
 ```{r warning=FALSE}
@@ -82,4 +88,194 @@ nodelabels(node=rate.data$node.results[, "node"][!is.na(node.color)], pch=21, co
 
 ###Plotting rates through time###
 
+The following is the procedure I used in my Masters, adapted from Lloyd (2012)
+```{r warning=FALSE}
+source("http://www.graemetlloyd.com/pubdata/functions_2.r")
+# Load tree: n.b. this has to have branch lengths - I got ACCTRAN and DELTRAN optimised trees from paup by using set=ACCTRAN/DELTRAN and then then saving a tree with branch lengths (BrLens=yes)
+tree <- read.nexus("../KeatMajACC.tre")
+# Load ages:
+ages<-daterr<-read.csv("../Keating16Dates.csv", header=TRUE,row.names=1)
+# Load completeness (used in one of the dating methods):
+comp<-read.csv("../K16Completeness.csv")          # number of missing characters - for now just counted ?
+#Randomise polytomies
+tree<-multi2di(tree, random=TRUE)
+
+# Number of characters (used in one of the dating methods):
+nchar<-120
+# Set number of trials:
+ntrials <- 1000 #down from 1000
+# Get list of nonterminal and nonroot nodes (Ntips plus two gets first non-root node, second is all nodes):
+nodes<-(Ntip(tree)+2):(Ntip(tree)+Nnode(tree))
+
+# Calculate tree properties
+#How many branches?
+n <- length(tree$edge[,1])
+#Creates a vector of edge lengths for the tree
+changes <- tree$edge.length
+# Create patristic distance tree -> function in Claddis? (patristic - distance between two tips)
+ptree<-pat.dist.phylo(tree, comp, nchar)
+
+# Calculate additional tree properties
+comparablechars <- changes/ptree$edge.length   # non-missing characters
+comparablechars[grep(NaN,comparablechars)] <- 0 # Catch zero changes/zero time; modified!
+pctcomp <- comparablechars/nchar
+#MakeTimeBins
+#tbins<-c(541,358.9,346.7,330.9,323.2,307,298.9,290.1,272.3,259.8,252.17)
+tbins <- c(541,307,250)
+# X-axis for plots, finds middles of time bins:
+#Changed first + to a -, think this is correct
+x<-tbins[1:(length(tbins)-1)]-((tbins[1:(length(tbins)-1)]-tbins[2:length(tbins)])/2)
+# Make matrix for storing counts:
+acctran.sumlineages<-acctranbins<-matrix(ncol=ntrials,nrow=length(tbins)-1)
+
+# Main loop:
+for (i in 1:ntrials) {
+   # Pick a random edge between the limits: (for each column pics a random age from a uniform distribution between the FAD and LAD)
+    for (j in 1:length(ages[,1])) ages[j,1]<-runif(1,daterr[j,2],daterr[j,1])
+    #dates phylogeny on basis of these dates
+    ttreeb<-date.phylo(tree, ages[tree$tip.label,], rlen=2, method="ruta", ptree)
+    nodeages<-date.nodes(ttreeb, max(ages)+2)
+    los<-nodeages[ttreeb$edge[,2]]
+    fos<-nodeages[ttreeb$edge[,1]]
+    changes<-vector(mode="numeric")
+    for (j in 1:length(tree$edge.length))       changes<-c(changes,runif(tree$edge.length[j],nodeages[ttreeb$edge[j,2]],nodeages[ttreeb$edge[j,1]]))
+    for (j in 2:length(tbins)) {
+        acctranbins[(j-1),i]<-length(intersect(grep(TRUE,changes <= tbins[(j-1)]),grep(TRUE,changes > tbins[j])))
+        bin.crossers<-intersect(grep(TRUE,fos >= tbins[(j-1)]),grep(TRUE,los <= tbins[j])) # Taxa that pass straight through bin
+        bin.bottoms<-intersect(intersect(grep(TRUE,fos >= tbins[(j-1)]),grep(TRUE,los > tbins[j])),grep(TRUE,los < tbins[(j-1)]))  # Taxa that span base of bin only
+        bin.tops<-intersect(intersect(grep(TRUE,fos < tbins[(j-1)]),grep(TRUE,fos > tbins[j])),grep(TRUE,los <= tbins[j]))
+        bin.within<-intersect(intersect(intersect(grep(TRUE,fos < tbins[(j-1)]),grep(TRUE,los > tbins[j])),grep(TRUE,fos > tbins[j])),grep(TRUE,los < tbins[(j-1)]))
+        acctran.sumlineages[(j-1),i]<-(length(bin.crossers)*(tbins[(j-1)]-tbins[j]))+sum(tbins[(j-1)]-los[bin.bottoms])+sum(fos[bin.tops]-tbins[j])+sum(fos[bin.within]-los[bin.within])
+    }
+    cat(i," ")
+}
+
+###Stops working here - I think because too many NAs?
+
+# Make character changes divided by sum of lineage durations table:
+acctran.res<-acctranbins/acctran.sumlineages
+deltran.res<-deltranbins/deltran.sumlineages
+for(i in 1:ntrials) acctran.res[,i]<-as.numeric(gsub(NaN,0,acctran.res[,i]))
+for(i in 1:ntrials) deltran.res[,i]<-as.numeric(gsub(NaN,0,deltran.res[,i]))
+
+# Mean and CI vectors:
+aclower95<-acctran.res[,1]
+acmean95<-apply(acctran.res,1,mean)
+acupper95<-acctran.res[,1]
+delower95<-deltran.res[,1]
+demean95<-apply(deltran.res,1,mean)
+deupper95<-deltran.res[,1]
+
+# Fill CIs:
+for (i in 1:length(acctran.res[,1])) {
+    aclower95[i]<-as.numeric(sort(acctran.res[i,])[max(floor(ntrials*0.025),1)])
+    acupper95[i]<-as.numeric(sort(acctran.res[i,])[ceiling(ntrials*0.975)])
+}
+for (i in 1:length(deltran.res[,1])) {
+    delower95[i]<-as.numeric(sort(deltran.res[i,])[max(floor(ntrials*0.025),1)])
+    deupper95[i]<-as.numeric(sort(deltran.res[i,])[ceiling(ntrials*0.975)])
+}
+
+# Create cumulative character acquisition matrix:
+acctranbinsper<-acctran.res
+deltranbinsper<-deltran.res
+
+# Fill it:
+for (i in 1:ntrials) {
+    for (j in 2:length(acctranbinsper[,1])) {
+        acctranbinsper[j,i]<-acctranbinsper[j,i]+acctranbinsper[(j-1),i]
+    }
+}
+for (i in 1:ntrials) {
+    for (j in 2:length(deltranbinsper[,1])) {
+        deltranbinsper[j,i]<-deltranbinsper[j,i]+deltranbinsper[(j-1),i]
+    }
+}
+
+# Mean and CI vectors:
+acclower95<-acctranbinsper[,1]
+accmean95<-apply(acctranbinsper,1,mean)
+accupper95<-acctranbinsper[,1]
+declower95<-deltranbinsper[,1]
+decmean95<-apply(deltranbinsper,1,mean)
+decupper95<-deltranbinsper[,1]
+
+# Fill CIs:
+for (i in 1:length(acctranbins[,1])) {
+    acclower95[i]<-as.numeric(sort(acctranbinsper[i,])[max(floor(ntrials*0.025),1)])
+    accupper95[i]<-as.numeric(sort(acctranbinsper[i,])[ceiling(ntrials*0.975)])
+}
+for (i in 1:length(deltranbins[,1])) {
+    declower95[i]<-as.numeric(sort(deltranbinsper[i,])[max(floor(ntrials*0.025),1)])
+    decupper95[i]<-as.numeric(sort(deltranbinsper[i,])[ceiling(ntrials*0.975)])
+}
+
+
+# Combine on single plot:
+pdf(file="charvstimeacctran.pdf",paper="a4r",width=30,height=20)
+GeoPeriods=c(541,485.4,443.4, 419.2, 358.9,298.9,252.17)
+par(mar=c(4,4,4,4)+0.1)
+plot(x,accmean95,xlim=c(max(tbins),min(tbins)),type="l",lwd=1,axes=F,ylab="",ylim=c(0,max(accupper95)),xlab="", xaxs="i")
+polygon(x=c(x,rev(x)),y=c(accupper95,rev(acclower95)),col="grey",border=NA, xaxs="i")
+points(x,accmean95,type="l")
+#points(x,acupper95,xlim=c(541,252.17),type="l",lwd=1,col="grey")
+#points(x,aclower95,xlim=c(541,252.17),type="l",lwd=1,col="grey")
+axis(4, ylab="Cumulative character acquisition")
+mtext("Cumulative character acquisition",side=4, line=2.5)
+par(new=TRUE)
+plotCI(x,acmean95,uiw=(acupper95-acmean95), xaxt='n', xaxs="i", liw=(acmean95-aclower95),cex=0.5,xlim=c(max(GeoPeriods),min(GeoPeriods)),xlab="Time (Ma)",ylab="Per lineage duration character changes")
+axis(1, at=c(500, 400, 450, 300, 350), lwd.ticks=2, xlim=c(max(GeoPeriods),min(GeoPeriods)))
+axis(1, at=c(540,530,520,510,490,480,470,460,450,440,430,420,410,390,380,370,360,350,340,330,320,310,290,280,270,260), xlim=c(max(GeoPeriods),min(GeoPeriods)), labels=FALSE)
+par(new=TRUE)
+stratbar<-c(1,1,1,1,1, 1)
+barwidths<-c(55.6, 42, 24.2, 60.3, 60, 46.73)
+yvect=c(0.5)
+barages<-c("Cambrian","Ordovician","Silurian","Devonian","Carboniferous","Permian")
+bp<-barplot(stratbar, width=barwidths, space=0, col=FALSE, yaxt='n', ylim=c(0, 40), xaxs="i")
+text(bp, yvect, barages, cex=0.6)
+dev.off()
+
+pdf(file="charvstimedeltran.pdf",paper="a4r",width=30,height=20)
+GeoPeriods=c(541,485.4,443.4, 419.2, 358.9,298.9,252.17)
+par(mar=c(4,4,4,4)+0.1)
+plot(x,decmean95,xlim=c(max(tbins),min(tbins)),type="l",lwd=1,axes=F,ylab="",ylim=c(0,max(decupper95)),xlab="", xaxs="i")
+polygon(x=c(x,rev(x)),y=c(decupper95,rev(declower95)),col="grey",border=NA, xaxs="i")
+points(x,decmean95,type="l")
+#points(x,deupper95,xlim=c(541,252.17),type="l",lwd=1,col="grey")
+#points(x,delower95,xlim=c(541,252.17),type="l",lwd=1,col="grey")
+axis(4, ylab="Cumulative character acquisition")
+mtext("Cumulative character acquisition",side=4, line=2.5)
+par(new=TRUE)
+plotCI(x,demean95,uiw=(deupper95-demean95), xaxt='n', xaxs="i", liw=(demean95-delower95),cex=0.5,xlim=c(max(GeoPeriods),min(GeoPeriods)),xlab="Time (Ma)",ylab="Per lineage duration character changes")
+axis(1, at=c(500, 400, 450, 300, 350), lwd.ticks=2, xlim=c(max(GeoPeriods),min(GeoPeriods)))
+axis(1, at=c(540,530,520,510,490,480,470,460,450,440,430,420,410,390,380,370,360,350,340,330,320,310,290,280,270,260), xlim=c(max(GeoPeriods),min(GeoPeriods)), labels=FALSE)
+par(new=TRUE)
+stratbar<-c(1,1,1,1,1, 1)
+barwidths<-c(55.6, 42, 24.2, 60.3, 60, 46.73)
+yvect=c(0.5)
+barages<-c("Cambrian","Ordovician","Silurian","Devonian","Carboniferous","Permian")
+bp<-barplot(stratbar, width=barwidths, space=0, col=FALSE, yaxt='n', ylim=c(0, 40), xaxs="i")
+text(bp, yvect, barages, cex=0.6)
+dev.off()
+
+
+# Write out data:
+write.table(deltran.res,"deltranres.txt",sep=",",row.names=F,col.names=F)
+write.table(acctran.res,"acctranres.txt",sep=",",row.names=F,col.names=F)
+
+
+```
+
+plot(tree)
+edgelabels(tree$edge.lengths)
+
+
+
+
 Work out if I can do this in Claddis
+Also be cool to try and plot rate per character
+
+
+Try:  ChronoPhyloMorphospacePlot
+      ChangesinBins
+      PlotCharacterChanges
